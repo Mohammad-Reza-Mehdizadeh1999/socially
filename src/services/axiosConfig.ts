@@ -4,7 +4,7 @@ export interface ApiRequestConfig extends InternalAxiosRequestConfig {
   requiresAuth?: boolean;
 }
 
-const axiosInstance: AxiosInstance = axios.create({
+const api: AxiosInstance = axios.create({
   baseURL: 'https://qbc11-front-next.liara.run/api',
   withCredentials: true, 
   headers: {
@@ -12,14 +12,14 @@ const axiosInstance: AxiosInstance = axios.create({
   }
 });
 
-axiosInstance.interceptors.request.use(
+api.interceptors.request.use(
   (config: ApiRequestConfig) => {
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-axiosInstance.interceptors.response.use(
+api.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error) => {
     if (error.response?.status === 401) {
@@ -29,4 +29,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+export default api;

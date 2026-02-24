@@ -2,6 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Mail, Lock, LogIn } from 'lucide-react';
+import { loginRequest } from '../services/authService';
+import { useNavigate } from 'react-router';
 
 interface LoginFormInputs {
   email: string;
@@ -9,6 +11,9 @@ interface LoginFormInputs {
 }
 
 const LoginPage: React.FC = () => {
+
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -17,8 +22,13 @@ const LoginPage: React.FC = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      console.log(data);
-      
+      const res = await loginRequest(data);
+      console.log(res.status === 200);
+      if (res.status === 200) {
+        toast.success('Login successful');
+        navigate('/');
+      }
+
     } catch (error) {
       console.error('Login error:', error);
       toast.error('An error occurred. Please try again.');

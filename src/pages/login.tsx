@@ -23,7 +23,6 @@ const LoginPage: React.FC = () => {
   const onSubmit = async (data: LoginFormInputs) => {
     try {
       const res = await loginRequest(data);
-      console.log(res.status === 200);
       if (res.status === 200) {
         toast.success('Login successful');
         navigate('/');

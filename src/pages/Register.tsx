@@ -2,6 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Mail, Lock, User, UserPlus } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { registerRequest } from '../services/authService';
 
 interface RegisterFormInputs {
   name: string;
@@ -10,6 +12,9 @@ interface RegisterFormInputs {
 }
 
 const RegisterPage: React.FC = () => {
+
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -17,10 +22,14 @@ const RegisterPage: React.FC = () => {
   } = useForm<RegisterFormInputs>();
 
   const onSubmit = async (data: RegisterFormInputs) => {
+
     try {
-      console.log('Register data:', data);
+      const res = await registerRequest(data);
       
-      toast.success('Account created successfully! 🎉');
+      if (res.status === 201) {
+        navigate('/');
+        toast.success('Account created successfully! 🎉');
+      }      
       
     } catch (error) {
       console.error('Register error:', error);

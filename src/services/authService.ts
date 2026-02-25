@@ -24,3 +24,7 @@ export const registerRequest = (data: RegisterDataType): Promise<AxiosResponse<a
   return api.post('/authentication/register', data);
 };
 
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const logoutRequest = (): Promise<AxiosResponse<any>> => {
+  return api.post('/authentication/logout');};

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { Home, Bell, User, LogOut, Moon, Sun, Menu } from "lucide-react";
 import MobileSidebar from "./MobileSidebar";
+import { logoutRequest } from "../services/authService";
+import toast from "react-hot-toast";
 
-interface HeaderProps {
-  onLogout?: () => void;
-}
 
-const Header: React.FC<HeaderProps> = ({ onLogout }) => {
+const Header: React.FC = () => {
+
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("theme");
@@ -20,7 +20,9 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
   });
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isDark) {
@@ -36,9 +38,20 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
     setIsDark((prev) => !prev);
   };
 
-  const handleLogout = () => {
-    onLogout?.();
-    setIsMobileMenuOpen(false);
+  const handleLogout = async () => {
+    try {
+      
+     await logoutRequest();
+     toast.success("Logout successfully");
+     navigate("/login");
+
+    } catch (err) {
+      toast.error("Logout failed");
+      console.error(err);
+
+    }finally {
+      setIsMobileMenuOpen(false);
+    }
   };
 
   const isActive = (path: string) => {
@@ -107,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
                 onClick={handleLogout}
                 className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300
                          hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-200
-                         focus:outline-none focus:ring-2 focus:ring-blue-500"
+                         focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 aria-label="Logout"
               >
                 <LogOut size={20} />

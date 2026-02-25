@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { Mail, Lock, LogIn } from 'lucide-react';
 import { loginRequest } from '../services/authService';
 import { useNavigate } from 'react-router';
+import Header from '../components/Header';
 
 interface LoginFormInputs {
   email: string;
@@ -46,6 +47,7 @@ const onError = (errors: any) => {
 
   return (
     <>
+      <Header />
       <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4">
         <div className="w-full max-w-4xl">
           <div className="bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-800">

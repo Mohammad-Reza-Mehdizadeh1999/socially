@@ -9,7 +9,7 @@ const RootLayout = () => {
       <Header />
 
       {/* Main Layout */}
-      <main className="flex flex-1 max-w-7xl mx-auto w-full px-4">
+      <main className="flex flex-1 max-w-7xl mx-auto w-full px-4 pt-10">
         {/* Left Side */}
         <aside className="w-1/3 pr-4">
           <SideProfile />

@@ -135,7 +135,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
                      bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400
                      hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-200
                      focus:outline-none focus:ring-2 focus:ring-red-500 mt-4 border-t 
-                     border-gray-200 dark:border-gray-800"
+                     border-gray-200 dark:border-gray-800 cursor-pointer"
           >
             <LogOut size={20} />
             <span className="font-medium">Logout</span>

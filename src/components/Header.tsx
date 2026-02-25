@@ -66,7 +66,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black transition-colors duration-300">
+      <header className="fixed top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black transition-colors duration-300">
         <div className=" mx-auto px-4 sm:px-6 lg:px-16">
           <div className="flex items-center justify-between h-16">
 

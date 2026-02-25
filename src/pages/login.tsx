@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Mail, Lock, LogIn } from 'lucide-react';
 import { loginRequest } from '../services/authService';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import Header from '../components/Header';
 
 interface LoginFormInputs {
@@ -154,12 +154,12 @@ const onError = (errors: any) => {
                     <div className="text-center">
                       <p className="text-sm text-gray-400">
                         Don't have an account?{' '}
-                        <a
-                          href="/register"
+                        <Link
+                          to="/register"
                           className="font-medium text-gray-300 hover:text-white underline underline-offset-2 transition-colors"
                         >
                           Sign up
-                        </a>
+                        </Link>
                       </p>
                     </div>
                   </form>

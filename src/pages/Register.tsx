@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Mail, Lock, User, UserPlus } from "lucide-react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { registerRequest } from "../services/authService";
 import Header from "../components/Header";
 
@@ -200,12 +200,12 @@ const RegisterPage: React.FC = () => {
                     <div className="text-center">
                       <p className="text-sm text-gray-400">
                         Already have an account?{" "}
-                        <a
-                          href="/login"
+                        <Link
+                          to="/login"
                           className="font-medium text-gray-300 hover:text-white underline underline-offset-2 transition-colors"
                         >
                           Sign in
-                        </a>
+                        </Link>
                       </p>
                     </div>
                   </form>

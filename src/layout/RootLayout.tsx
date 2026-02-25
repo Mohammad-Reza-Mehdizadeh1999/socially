@@ -1,8 +1,18 @@
 import { Outlet } from "react-router";
 import SideProfile from "../components/SideProfile";
 import Header from "../components/Header";
+import { useAuthStore } from "../store/authStore";
+import { useSessionQuery } from "../hooks/useSessionQuery";
 
 const RootLayout = () => {
+  
+  
+  const { isLoading } = useSessionQuery();
+  const { isAuthenticated } = useAuthStore();
+
+  if (isLoading) return <div>Loading...</div>;
+  console.log(isAuthenticated);
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}

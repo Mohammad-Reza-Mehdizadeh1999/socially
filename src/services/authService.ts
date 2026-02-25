@@ -27,4 +27,12 @@ export const registerRequest = (data: RegisterDataType): Promise<AxiosResponse<a
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const logoutRequest = (): Promise<AxiosResponse<any>> => {
-  return api.post('/authentication/logout');};
+  return api.post('/authentication/logout');
+};
+
+
+export const getSession = async () => {
+  const res = await api.get("/authentication/session");  
+  return res.data;
+};
+

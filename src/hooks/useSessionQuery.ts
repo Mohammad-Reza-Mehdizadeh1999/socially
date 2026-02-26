@@ -26,7 +26,7 @@ export const useSessionQuery = () => {
     if (query.isError) {
       clearAuth();
     }
-  }, [query.data, query.isError]);
+  }, [query.data, query.isError , clearAuth , setAuth]);
 
   return query;
 };

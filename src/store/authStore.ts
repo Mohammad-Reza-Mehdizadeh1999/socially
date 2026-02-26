@@ -13,8 +13,11 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
+
   user: null,
+
   session: null,
+
   isAuthenticated: false,
 
   setAuth: (data) =>
@@ -30,4 +33,5 @@ export const useAuthStore = create<AuthState>((set) => ({
       session: null,
       isAuthenticated: false,
     }),
+    
 }));

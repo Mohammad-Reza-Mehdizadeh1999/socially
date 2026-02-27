@@ -5,7 +5,7 @@ const SideProfile: React.FC = () => {
   return (
     <div className="bg-gray-200 dark:bg-black rounded-2xl p-6 border border-gray-800">
       {/* Avatar */}
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center ">
         <div className="w-20 h-20 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center overflow-hidden">
           <svg
             className="w-10 h-10 text-white"

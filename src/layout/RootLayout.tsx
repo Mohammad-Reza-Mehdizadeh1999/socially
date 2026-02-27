@@ -14,19 +14,19 @@ const RootLayout = () => {
   console.log(isAuthenticated);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col dark:bg-black bg-white text-black dark:text-white">
       {/* Header */}
       <Header />
 
       {/* Main Layout */}
-      <main className="flex flex-1 max-w-7xl mx-auto w-full px-4 pt-10">
+      <main className="flex flex-1 max-w-7xl mx-auto w-full gap-5 pt-25">
         {/* Left Side */}
-        <aside className="w-1/3 pr-4">
+        <aside className="w-1/3 mt-5">
           <SideProfile />
         </aside>
 
         {/* Right Side (Pages) */}
-        <section className="w-2/3">
+        <section className="w-2/3 dark:bg-black bg-white text-black dark:text-white">
           <Outlet />
         </section>
       </main>

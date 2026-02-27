@@ -173,7 +173,7 @@ const AllPosts = () => {
 
   useEffect(() => {
 
-    //fetch all posts in here
+    
 
   }, []);
 

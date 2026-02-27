@@ -3,155 +3,19 @@ import { useState, useEffect } from "react";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
 import Avatar from "../Ui/Avatar";
 import type { Post } from "../../types/allPosts";
-import { createNewPostRequest } from "../../services/postServices";
+import {
+  createNewPostRequest,
+  getAllPostRequest,
+} from "../../services/postServices";
 import toast from "react-hot-toast";
+import { useGetAllPosts } from "../../hooks/useGetAllPosts";
 
 const AllPosts = () => {
-  const [posts] = useState<Post[]>(() => {
-    return [
-      {
-        id: "cmlz4ff1v00erqr0kiobmdz2s",
-        authorId: "p0ITHdTH8wYDH3LUX6C2eBO6XIhRmPtU",
-        content: "سلام سلااااااام همگی سلام",
-        createdAt: "2026-02-23T11:56:33.139Z",
-        updatedAt: "2026-02-23T11:56:33.139Z",
-        author: {
-          name: "behtash",
-          email: "behtash@gmail.com",
-          image: null,
-        },
-        likes: [
-          {
-            userId: "c5P2W5dP75NR5btZoQ9H4if9VMLIPVjE",
-          },
-          {
-            userId: "XursuXfi0IMwN0oEVnuuBJhavR1LbvoE",
-          },
-        ],
-        comments: [
-          {
-            id: "cmlz4gg5400exqr0kzxiwl34h",
-            content: "علیک سلام",
-            createdAt: "2026-02-23T11:57:21.209Z",
-            author: {
-              name: "mohammad reza",
-              email: "morez.mehdizadeh1999@gmail.com",
-              image: null,
-            },
-          },
-        ],
-        _count: {
-          likes: 2,
-          comments: 1,
-        },
-      },
-      {
-        id: "cmlthk8fg00atqr0kmzhv904n",
-        authorId: "0cBLLdV3XuK1cCWjUAWOBDMCLJA1KyBO",
-        content: "Tired....",
-        createdAt: "2026-02-19T13:17:35.788Z",
-        updatedAt: "2026-02-19T13:17:35.788Z",
-        author: {
-          name: "Anna",
-          email: "anahiita.sllp2000@gmail.com",
-          image: null,
-        },
-        likes: [
-          {
-            userId: "v61cBlS4e9PwwBIwkULmpt4dzh8DaHd8",
-          },
-          {
-            userId: "etDfDfErfPSJvNQy8PggtSXxbcBL3IJY",
-          },
-          {
-            userId: "BNAvyEDPIUsoKju1wb252I5kHsUv5Cs9",
-          },
-          {
-            userId: "c5P2W5dP75NR5btZoQ9H4if9VMLIPVjE",
-          },
-          {
-            userId: "XursuXfi0IMwN0oEVnuuBJhavR1LbvoE",
-          },
-          {
-            userId: "DYjwSQqMKCyhCxpqQvPc0ouMpEU8zneZ",
-          },
-        ],
-        comments: [
-          {
-            id: "cmlurzxbj00b5qr0khyn7v5id",
-            content: "Whyyyyyyyyyy !?",
-            createdAt: "2026-02-20T10:57:30.224Z",
-            author: {
-              name: "amir",
-              email: "amir@gmail.com",
-              image: null,
-            },
-          },
-          {
-            id: "cmlv90xzv00bdqr0ke5gn2teo",
-            content:
-              "Every moment, something new!!\r\nI didn’t know I could reply to comments.\r\nThanks!",
-            createdAt: "2026-02-20T18:54:11.227Z",
-            author: {
-              name: "Anna",
-              email: "anahiita.sllp2000@gmail.com",
-              image: null,
-            },
-          },
-        ],
-        _count: {
-          likes: 6,
-          comments: 2,
-        },
-      },
-      {
-        id: "cmlphgo9l005jqr0k1haz0hwg",
-        authorId: "UFag4tahxnT5Cb7YrJwCNwqSXzn01AL9",
-        content: "سلام بای",
-        createdAt: "2026-02-16T18:03:44.985Z",
-        updatedAt: "2026-02-16T18:03:44.985Z",
-        author: {
-          name: "naghi",
-          email: "naghi@gmail.com",
-          image: null,
-        },
-        likes: [
-          {
-            userId: "0cBLLdV3XuK1cCWjUAWOBDMCLJA1KyBO",
-          },
-          {
-            userId: "FqitbO2SMFcbRG7ot7T4b4UBPIKgSm5p",
-          },
-          {
-            userId: "c5P2W5dP75NR5btZoQ9H4if9VMLIPVjE",
-          },
-        ],
-        comments: [
-          {
-            id: "cmlphh42o005pqr0kggj4f667",
-            content: "hahahaha",
-            createdAt: "2026-02-16T18:04:05.472Z",
-            author: {
-              name: "Anna",
-              email: "anahiita.sllp2000@gmail.com",
-              image: null,
-            },
-          },
-        ],
-        _count: {
-          likes: 3,
-          comments: 1,
-        },
-      },
-    ];
-  });
-
   const [newPostText, setNewPostText] = useState("");
   const [openCommentPostId, setOpenCommentPostId] = useState<string | null>(
     null,
   );
   const [commentInput, setcommentInput] = useState<string>();
-
 
   const getRelativeTime = (dateString: string) => {
     const now = new Date();
@@ -164,52 +28,49 @@ const AllPosts = () => {
     return `${Math.floor(secTime / 86400)} days ago`;
   };
 
-
   const handleDeletePost = (postId: string) => {
     console.log(postId);
-    
   };
 
+  const { data, isLoading, isError } = useGetAllPosts();
 
-  useEffect(() => {
+  const allPosts = data?.data ?? [];
 
-    
-
-  }, []);
-
-
-  async function handleCreatePost(){
-
+  async function handleCreatePost() {
     const payload = {
-      content : newPostText
-    }
+      content: newPostText,
+    };
     try {
-      await createNewPostRequest(payload)
-      toast.success("post created successfully")
-      setNewPostText("")
-
+      await createNewPostRequest(payload);
+      toast.success("post created successfully");
+      setNewPostText("");
     } catch (error) {
-      console.error(error)
-      toast.error("create new post failed. Please try again")
+      console.error(error);
+      toast.error("create new post failed. Please try again");
     }
   }
 
-
-  async function handleAddComment(postId : string){
+  async function handleAddComment(postId: string) {
     console.log(postId);
-
   }
 
-
-  async function handleToggleLike(postId : string){
+  async function handleToggleLike(postId: string) {
     console.log(postId);
-    
+  }
+
+  if (isLoading) {
+    return <div className="text-center mt-10">Loading posts...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="text-center mt-10 text-red-500">Something went wrong</div>
+    );
   }
 
   return (
     <section>
       <div className="m-6 mx-auto p-6 w-186 shadow-sm dark:bg-primary-light rounded-xl border border-border-light dark:border-border-dark">
-
         <div className="flex items-start gap-x-3 pb-3 border-b border-b-border-light dark:border-b-border-dark">
           <Avatar src={avatar} height={30} width={30}></Avatar>
           <textarea
@@ -233,8 +94,7 @@ const AllPosts = () => {
         </div>
       </div>
 
-      {posts.map((post) => {
-
+      {allPosts.map((post) => {
         const isOpen = openCommentPostId === post.id;
 
         return (
@@ -270,9 +130,7 @@ const AllPosts = () => {
                     size={20}
                     className={"text-secondery-light dark:text-secondary-dark"}
                   />
-                  <span className="">
-                    {post._count.likes}
-                  </span>
+                  <span className="">{post._count.likes}</span>
                 </button>
                 <button
                   onClick={() => setOpenCommentPostId(isOpen ? null : post.id)}
@@ -322,12 +180,10 @@ const AllPosts = () => {
                   <Avatar src={avatar} height={30} width={30}></Avatar>
                   <textarea
                     value={commentInput}
-                    onChange={(e) =>setcommentInput(e.target.value)}
+                    onChange={(e) => setcommentInput(e.target.value)}
                     className="resize-none w-full min-h-16 px-3 py-2 rounded-xl placeholder:text-sm dark:placeholder:text-secondary-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-400 focus:transition-all border border-border-light dark:border-secondary- dark:bg-border-dark"
                     placeholder="Write a comment..."
-                  >
-
-                  </textarea>
+                  ></textarea>
                 </div>
 
                 <div className="flex justify-end">

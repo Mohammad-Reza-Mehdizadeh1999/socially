@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
 import Avatar from "../Ui/Avatar";
 import type { Post } from "../../types/allPosts";
+import { createNewPostRequest } from "../../services/postServices";
+import toast from "react-hot-toast";
 
 const AllPosts = () => {
   const [posts] = useState<Post[]>(() => {
@@ -178,7 +180,18 @@ const AllPosts = () => {
 
   async function handleCreatePost(){
 
+    const payload = {
+      content : newPostText
+    }
+    try {
+      await createNewPostRequest(payload)
+      toast.success("post created successfully")
+      setNewPostText("")
 
+    } catch (error) {
+      console.error(error)
+      toast.error("create new post failed. Please try again")
+    }
   }
 
 
@@ -196,6 +209,7 @@ const AllPosts = () => {
   return (
     <section>
       <div className="m-6 mx-auto p-6 w-186 shadow-sm dark:bg-primary-light rounded-xl border border-border-light dark:border-border-dark">
+
         <div className="flex items-start gap-x-3 pb-3 border-b border-b-border-light dark:border-b-border-dark">
           <Avatar src={avatar} height={30} width={30}></Avatar>
           <textarea
@@ -205,6 +219,7 @@ const AllPosts = () => {
             placeholder="Whats on your mind?"
           ></textarea>
         </div>
+
         <div className="flex justify-end">
           <button
             type="submit"

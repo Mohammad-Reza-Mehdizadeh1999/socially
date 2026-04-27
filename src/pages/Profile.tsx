@@ -1,9 +1,17 @@
+import { useParams } from "react-router";
 import ProfileCard from "../components/profile/ProfileCard";
 import ProfileDetails from "../components/profile/ProfileDetails";
 import type { LikedPost, Post } from "../types/ProfileTypes";
+import { useGetProfileData } from "../hooks/useGetProfileData";
 
 export default function ProfilePage() {
 
+  const {userId} = useParams()
+
+  const {data} = useGetProfileData(userId!)
+
+  console.log(data);
+  
     const postsData: Post[] = [
     {
       id: "cmlz4ff1v00erqr0kiobmdz2s",

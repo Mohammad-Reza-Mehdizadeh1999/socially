@@ -63,8 +63,6 @@ const Header: React.FC = () => {
 
   const { user } = useAuthStore();
 
-  console.log(user);
-
   const navLinks = [
     { path: "/", icon: Home, label: "Home" },
     { path: "/notifications", icon: Bell, label: "Notifications" },

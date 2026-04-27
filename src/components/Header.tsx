@@ -7,9 +7,7 @@ import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 import { useQueryClient } from "@tanstack/react-query";
 
-
 const Header: React.FC = () => {
-
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("theme");
@@ -23,9 +21,9 @@ const Header: React.FC = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const { clearAuth} = useAuthStore();
-  
-  const queryClient = useQueryClient()
+  const { clearAuth } = useAuthStore();
+
+  const queryClient = useQueryClient();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,18 +44,15 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      
-     await logoutRequest();
-     toast.success("Logout successfully");
-     clearAuth()
-     queryClient.removeQueries({ queryKey: ['session'] })
-     navigate("/login");
-
+      await logoutRequest();
+      toast.success("Logout successfully");
+      clearAuth();
+      queryClient.removeQueries({ queryKey: ["session"] });
+      navigate("/login");
     } catch (err) {
       toast.error("Logout failed");
       console.error(err);
-
-    }finally {
+    } finally {
       setIsMobileMenuOpen(false);
     }
   };
@@ -66,12 +61,14 @@ const Header: React.FC = () => {
     return location.pathname === path;
   };
 
-  const {user} = useAuthStore()
+  const { user } = useAuthStore();
+
+  console.log(user);
 
   const navLinks = [
     { path: "/", icon: Home, label: "Home" },
     { path: "/notifications", icon: Bell, label: "Notifications" },
-    { path: `/profile/${user.id}`, icon: User, label: "Profile" },
+    { path: `/profile/${user?.id}`, icon: User, label: "Profile" },
   ];
 
   return (
@@ -79,7 +76,6 @@ const Header: React.FC = () => {
       <header className="fixed top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black transition-colors duration-300">
         <div className=" mx-auto px-4 sm:px-6 lg:px-16">
           <div className="flex items-center justify-between h-16">
-
             {/* Logo - Center (Mobile & Desktop) */}
             <div className="flex-1 md:flex-none ">
               <Link
@@ -105,36 +101,63 @@ const Header: React.FC = () => {
                 {isDark ? <Sun size={20} /> : <Moon size={20} />}
               </button>
 
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200
+              {user &&
+                navLinks.map((link) => {
+                  const Icon = link.icon;
+                  return (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200
                              focus:outline-none focus:ring-2 focus:ring-blue-500
                              ${
                                isActive(link.path)
                                  ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                                  : "bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800"
                              }`}
-                  >
-                    <Icon size={20} />
-                    <span className="font-medium">{link.label}</span>
-                  </Link>
-                );
-              })}
+                    >
+                      <Icon size={20} />
+                      <span className="font-medium">{link.label}</span>
+                    </Link>
+                  );
+                })}
 
               {/* Logout */}
-              <button
-                onClick={handleLogout}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300
+              {user && (
+                <button
+                  onClick={handleLogout}
+                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300
                          hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-200
                          focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                aria-label="Logout"
-              >
-                <LogOut size={20} />
-              </button>
+                  aria-label="Logout"
+                >
+                  <LogOut size={20} />
+                </button>
+              )}
+
+              {!user && (
+                <div className="flex items-center gap-1.5">
+                  <Link
+                    to={"/login"}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200
+                             focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 
+                         hover:bg-gray-200 dark:hover:bg-gray-800`}
+                  >
+                    <Home size={20} />
+                    <span className="font-medium">Login</span>
+                  </Link>
+
+                  <Link
+                    to={"/register"}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200
+                             focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 
+                         hover:bg-gray-200 dark:hover:bg-gray-800`}
+                  >
+                    <Home size={20} />
+                    <span className="font-medium">Register</span>
+                  </Link>
+                </div>
+              )}
             </nav>
 
             {/* Right Side - Desktop: Empty, Mobile: Menu Button */}
@@ -150,7 +173,6 @@ const Header: React.FC = () => {
                 <Menu size={24} />
               </button>
             </div>
-
           </div>
         </div>
       </header>

@@ -1,14 +1,11 @@
 import avatar from "../../assets/avatar.png";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
 import Avatar from "../Ui/Avatar";
-import type { Post } from "../../types/allPosts";
-import {
-  createNewPostRequest,
-  getAllPostRequest,
-} from "../../services/postServices";
+import {createNewPostRequest} from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useGetAllPosts } from "../../hooks/useGetAllPosts";
+import type { Post } from "../../types/allPosts";
 
 const AllPosts = () => {
   const [newPostText, setNewPostText] = useState("");
@@ -94,7 +91,7 @@ const AllPosts = () => {
         </div>
       </div>
 
-      {allPosts.map((post) => {
+      {allPosts.map((post : Post) => {
         const isOpen = openCommentPostId === post.id;
 
         return (

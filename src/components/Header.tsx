@@ -4,6 +4,8 @@ import { Home, Bell, User, LogOut, Moon, Sun, Menu } from "lucide-react";
 import MobileSidebar from "./MobileSidebar";
 import { logoutRequest } from "../services/authService";
 import toast from "react-hot-toast";
+import { useAuthStore } from "../store/authStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 const Header: React.FC = () => {
@@ -20,6 +22,10 @@ const Header: React.FC = () => {
   });
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const { clearAuth} = useAuthStore();
+  
+  const queryClient = useQueryClient()
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -43,6 +49,8 @@ const Header: React.FC = () => {
       
      await logoutRequest();
      toast.success("Logout successfully");
+     clearAuth()
+     queryClient.removeQueries({ queryKey: ['session'] })
      navigate("/login");
 
     } catch (err) {

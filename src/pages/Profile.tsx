@@ -21,7 +21,7 @@ export default function ProfilePage() {
 
   return (
     <div className="w-full min-h-screen mx-auto pt-5 dark:bg-black">
-      <ProfileCard profileData={profileData}/>
+      <ProfileCard profileData={profileData} userPostsLength={profilePostsData?.length}/>
       <ProfileDetails  profilePostsData={profilePostsData}  profileLikesData={profileLikesData}/>
     </div>
   )

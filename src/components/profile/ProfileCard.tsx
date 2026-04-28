@@ -4,9 +4,10 @@ import type { UserProfile } from '../../types/ProfileTypes';
 
 interface ProfileCardProps {
   profileData?: UserProfile;
+  userPostsLength?:number;
 }
 
-const ProfileCard = ({ profileData }: ProfileCardProps) => {
+const ProfileCard = ({ profileData , userPostsLength }: ProfileCardProps) => {
 
     const getTimeAgo = (dateString: string): string => {
     const date = new Date(dateString);
@@ -56,7 +57,7 @@ const ProfileCard = ({ profileData }: ProfileCardProps) => {
 
         {/* Posts */}
         <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
-          <div className="text-2xl font-bold text-white mb-1">1</div>
+          <div className="text-2xl font-bold text-white mb-1">{userPostsLength}</div>
           <div className="text-gray-400 text-sm">Posts</div>
         </div>
       </div>

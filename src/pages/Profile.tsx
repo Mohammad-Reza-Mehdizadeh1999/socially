@@ -4,6 +4,7 @@ import ProfileDetails from "../components/profile/ProfileDetails";
 import type { LikedPost } from "../types/ProfileTypes";
 import { useGetProfileData } from "../hooks/useGetProfileData";
 import { useGetUserPosts } from "../hooks/useGetUserPosts";
+import { useGetUserLikes } from "../hooks/useGetUserLikes";
 
 export default function ProfilePage() {
 
@@ -61,6 +62,9 @@ export default function ProfilePage() {
 
   const {data: profilePostsData } = useGetUserPosts(userId!)
 
+  const {data: profileLikesData } = useGetUserLikes(userId!)
+
+  console.log(profileLikesData);
   
 
   if (isLoading) return <div>Loading...</div>;

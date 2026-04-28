@@ -10,3 +10,7 @@ export const GetProfileDataRequest = (userId : string): Promise<AxiosResponse<an
 export const GetUserPostsRequest = (userId : string): Promise<AxiosResponse<any>> => {
   return api.get(`/users/${userId}/posts`);
 };
+
+export const GetUserLikesRequest = (userId : string): Promise<AxiosResponse<any>> => {
+  return api.get(`/users/${userId}/likes`);
+};

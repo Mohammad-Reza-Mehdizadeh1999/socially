@@ -6,16 +6,22 @@ export interface User {
   name: string;
 }
 
-export interface ProfileLikes {
+export interface ProfileLike {
   userId: string;
 }
 
-export interface ProfileComments {
+export interface ProfileComment {
   id: string;
   content: string;
-  author: User;
   createdAt: string;
+  author: User;
 }
+
+export interface ProfilePostCount {
+  likes: number;
+  comments: number;
+}
+
 
 export interface ProfilePostsType {
   id: string;
@@ -24,21 +30,12 @@ export interface ProfilePostsType {
   createdAt: string;
   updatedAt: string;
   author: User;
-  likes: ProfileLikes[];
-  comments: ProfileComments[];
-  _count: {
-    likes: number;
-    comments: number;
-  };
+  likes: ProfileLike[];
+  comments: ProfileComment[];
+  _count: ProfilePostCount;
 }
 
-export interface LikedPost {
-  id: string;
-  userId: string;
-  postId: string;
-  createdAt: string;
-  post: ProfilePostsType;
-}
+
 
 export type ProfileTab = 'posts' | 'likes';
 
@@ -51,10 +48,18 @@ export interface UserProfile {
   bio: string | null;
   location: string | null;
   website: string | null;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  createdAt: string;
+  updatedAt: string;
   _count: {
     followers: number;
     followings: number;
   };
+}
+
+export interface LikedPost {
+  id: string;        // like id
+  userId: string;    // the user who liked the post
+  postId: string;
+  createdAt: string;
+  post: ProfilePostsType;
 }

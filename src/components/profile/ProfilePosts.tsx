@@ -57,7 +57,7 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
                   {post.author.name}
                 </h3>
                 <p className="text-gray-400 text-xs">
-                  @{post.author.name.replace(/\s+/g, '').toLowerCase()}
+                  {post.author.email}
                 </p>
               </div>
 

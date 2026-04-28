@@ -35,7 +35,7 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ likes }) => {
 
   return (
     <div className="space-y-4">
-      {likes.map((like) => {
+      {likes?.map((like) => {
         const post = like.post;
         return (
           <div
@@ -57,7 +57,7 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ likes }) => {
                   {post.author.name}
                 </h3>
                 <p className="text-gray-400 text-xs">
-                  @{post.author.name.replace(/\s+/g, '').toLowerCase()}
+                  {post.author.email}
                 </p>
                 <span className="text-gray-500 text-xs">
                   {getTimeAgo(post.createdAt)}

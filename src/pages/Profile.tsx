@@ -1,8 +1,9 @@
 import { useParams } from "react-router";
 import ProfileCard from "../components/profile/ProfileCard";
 import ProfileDetails from "../components/profile/ProfileDetails";
-import type { LikedPost, Post } from "../types/ProfileTypes";
+import type { LikedPost } from "../types/ProfileTypes";
 import { useGetProfileData } from "../hooks/useGetProfileData";
+import { useGetUserPosts } from "../hooks/useGetUserPosts";
 
 export default function ProfilePage() {
 
@@ -10,41 +11,6 @@ export default function ProfilePage() {
 
   const {data: profileData , isLoading } = useGetProfileData(userId!)
 
-  console.log(profileData);
-  
-    const postsData: Post[] = [
-    {
-      id: "cmlz4ff1v00erqr0kiobmdz2s",
-      authorId: "p0ITHdTH8wYDH3LUX6C2eBO6XIhRmPtU",
-      content: "سلام سلااااااام همگی سلام",
-      createdAt: "2026-02-23T11:56:33.139Z",
-      updatedAt: "2026-02-23T11:56:33.139Z",
-      author: {
-        id: "p0ITHdTH8wYDH3LUX6C2eBO6XIhRmPtU",
-        email: "behtash@gmail.com",
-        image: null,
-        name: "behtash"
-      },
-      likes: [{ userId: "c5P2W5dP75NR5btZoQ9H4if9VMLIPVjE" }],
-      comments: [
-        {
-          id: "cmlz4gg5400exqr0kzxiwl34h",
-          content: "علیک سلام",
-          author: {
-            id: "c5P2W5dP75NR5btZoQ9H4if9VMLIPVjE",
-            email: "morez.mehdizadeh1999@gmail.com",
-            image: null,
-            name: "mohammad reza"
-          },
-          createdAt: "2026-02-23T11:57:21.209Z"
-        }
-      ],
-      _count: {
-        likes: 1,
-        comments: 1
-      }
-    }
-  ];
 
   const likesData: LikedPost[] = [
     {
@@ -93,6 +59,9 @@ export default function ProfilePage() {
     }
   ];
 
+  const {data: profilePostsData } = useGetUserPosts(userId!)
+
+  
 
   if (isLoading) return <div>Loading...</div>;
   if (!profileData) return <div>پروفایلی یافت نشد</div>;
@@ -100,7 +69,7 @@ export default function ProfilePage() {
   return (
     <div className="w-full min-h-screen mx-auto pt-5 dark:bg-black">
       <ProfileCard profileData={profileData}/>
-      <ProfileDetails  postsData={postsData}  likesData={likesData}/>
+      <ProfileDetails  profilePostsData={profilePostsData}  likesData={likesData}/>
     </div>
   )
 }

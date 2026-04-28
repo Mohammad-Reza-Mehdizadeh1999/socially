@@ -1,9 +1,9 @@
 import React from 'react';
 import { Heart, MessageCircle, Trash2 } from 'lucide-react';
-import type { Post } from '../../types/ProfileTypes';
+import type { ProfilePostsType } from '../../types/ProfileTypes';
 
 interface ProfilePostsProps {
-  posts: Post[];
+  posts: ProfilePostsType[];
   onDeletePost?: (postId: string) => void;
 }
 
@@ -36,7 +36,7 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
 
   return (
     <div className="space-y-4">
-      {posts.map((post) => (
+      {posts?.map((post) => (
         <div
           key={post.id}
           className="bg-gray-900 rounded-xl p-4 border border-gray-800"
@@ -45,7 +45,7 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3">
               {/* Avatar */}
-              <div className="w-10 h-10 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center shrink-0">
                 <span className="text-white font-medium text-sm">
                   {post.author.name.charAt(0).toUpperCase()}
                 </span>

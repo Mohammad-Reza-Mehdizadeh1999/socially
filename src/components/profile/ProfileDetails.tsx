@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import ProfilePosts from './ProfilePosts';
 import ProfileLikes from './ProfileLikes';
-import type { LikedPost, Post, ProfileTab } from '../../types/ProfileTypes';
+import type { LikedPost, ProfilePostsType, ProfileTab } from '../../types/ProfileTypes';
 
 interface ProfileDetailsProps {
-  postsData?: Post[];
+  profilePostsData?: ProfilePostsType[];
   likesData?: LikedPost[];
 }
 
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({
-  postsData = [],
+  profilePostsData = [],
   likesData = [],
 }) => {
   const [activeTab, setActiveTab] = useState<ProfileTab>('posts');
@@ -43,7 +43,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({
       {/* Content */}
       <div>
         {activeTab === 'posts' ? (
-          <ProfilePosts posts={postsData} />
+          <ProfilePosts posts={profilePostsData} />
         ) : (
           <ProfileLikes likes={likesData} />
         )}

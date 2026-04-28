@@ -6,26 +6,26 @@ export interface User {
   name: string;
 }
 
-export interface Like {
+export interface ProfileLikes {
   userId: string;
 }
 
-export interface Comment {
+export interface ProfileComments {
   id: string;
   content: string;
   author: User;
   createdAt: string;
 }
 
-export interface Post {
+export interface ProfilePostsType {
   id: string;
   authorId: string;
   content: string;
   createdAt: string;
   updatedAt: string;
   author: User;
-  likes: Like[];
-  comments: Comment[];
+  likes: ProfileLikes[];
+  comments: ProfileComments[];
   _count: {
     likes: number;
     comments: number;
@@ -37,7 +37,7 @@ export interface LikedPost {
   userId: string;
   postId: string;
   createdAt: string;
-  post: Post;
+  post: ProfilePostsType;
 }
 
 export type ProfileTab = 'posts' | 'likes';

@@ -8,9 +8,9 @@ export default function ProfilePage() {
 
   const {userId} = useParams()
 
-  const {data} = useGetProfileData(userId!)
+  const {data: profileData , isLoading } = useGetProfileData(userId!)
 
-  console.log(data);
+  console.log(profileData);
   
     const postsData: Post[] = [
     {
@@ -94,11 +94,12 @@ export default function ProfilePage() {
   ];
 
 
-
+  if (isLoading) return <div>Loading...</div>;
+  if (!profileData) return <div>پروفایلی یافت نشد</div>;
 
   return (
     <div className="w-full min-h-screen mx-auto pt-5 dark:bg-black">
-      <ProfileCard />
+      <ProfileCard profileData={profileData}/>
       <ProfileDetails  postsData={postsData}  likesData={likesData}/>
     </div>
   )

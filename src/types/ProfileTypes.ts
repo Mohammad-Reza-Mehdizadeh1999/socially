@@ -41,3 +41,20 @@ export interface LikedPost {
 }
 
 export type ProfileTab = 'posts' | 'likes';
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  image: string | null;
+  bio: string | null;
+  location: string | null;
+  website: string | null;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  _count: {
+    followers: number;
+    followings: number;
+  };
+}

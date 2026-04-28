@@ -1,7 +1,13 @@
 import React from 'react';
 import { MapPin, Link as LinkIcon, Calendar, UserPlus } from 'lucide-react';
+import type { UserProfile } from '../../types/ProfileTypes';
 
-const ProfileCard: React.FC = () => {
+
+interface ProfileCardProps {
+  profileData?: UserProfile;
+}
+
+const ProfileCard = ({ profileData }: ProfileCardProps) => {
 
     const getTimeAgo = (dateString: string): string => {
     const date = new Date(dateString);
@@ -31,21 +37,21 @@ const ProfileCard: React.FC = () => {
 
       {/* Name & Username */}
       <div className="text-center mb-6">
-        <h2 className="text-xl font-bold text-white mb-1">behtash</h2>
-        <p className="text-gray-400 text-sm">@behtash</p>
+        <h2 className="text-xl font-bold text-white mb-1">{profileData?.name}</h2>
+        <p className="text-gray-400 text-sm">{profileData?.email}</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         {/* Followings */}
         <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
-          <div className="text-2xl font-bold text-white mb-1">0</div>
+          <div className="text-2xl font-bold text-white mb-1">{profileData?._count.followings}</div>
           <div className="text-gray-400 text-sm">Followings</div>
         </div>
 
         {/* Followers */}
         <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
-          <div className="text-2xl font-bold text-white mb-1">1</div>
+          <div className="text-2xl font-bold text-white mb-1">{profileData?._count?.followers}</div>
           <div className="text-gray-400 text-sm">Followers</div>
         </div>
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { MapPin, Link as LinkIcon, Calendar, UserPlus } from 'lucide-react';
 import type { UserProfile } from '../../types/ProfileTypes';
 

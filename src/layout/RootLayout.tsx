@@ -1,17 +1,15 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import SideProfile from "../components/SideProfile";
 import Header from "../components/Header";
-import { useAuthStore } from "../store/authStore";
 import { useSessionQuery } from "../hooks/useSessionQuery";
 
 const RootLayout = () => {
-  
-  
   const { isLoading } = useSessionQuery();
-  const { isAuthenticated } = useAuthStore();
+
+  const location = useLocation();
+  console.log(location.pathname);
 
   if (isLoading) return <div>Loading...</div>;
-  console.log(isAuthenticated);
 
   return (
     <div className="min-h-screen flex flex-col dark:bg-black bg-white text-black dark:text-white">
@@ -21,12 +19,18 @@ const RootLayout = () => {
       {/* Main Layout */}
       <main className="flex flex-1 max-w-7xl mx-auto w-full gap-5 pt-25">
         {/* Left Side */}
-        <aside className="w-1/3 mt-5">
-          <SideProfile />
-        </aside>
+        {!location.pathname.startsWith("/profile") && (
+          <aside className="w-1/3 mt-5">
+            <SideProfile />
+          </aside>
+        )}
 
         {/* Right Side (Pages) */}
-        <section className="w-2/3 dark:bg-black bg-white text-black dark:text-white">
+        <section
+          className={`${
+            location.pathname.startsWith("/profile") ? "w-full" : "w-2/3"
+          } dark:bg-black bg-white text-black dark:text-white`}
+        >
           <Outlet />
         </section>
       </main>

@@ -1,7 +1,13 @@
 import React from 'react';
 import { MapPin, Link as LinkIcon } from 'lucide-react';
+import { useAuthStore } from '../store/authStore';
 
 const SideProfile: React.FC = () => {
+
+  const { user } = useAuthStore();
+  
+
+
   return (
     <div className="bg-gray-200 dark:bg-black rounded-2xl p-6 border border-gray-800">
       {/* Avatar */}
@@ -23,8 +29,8 @@ const SideProfile: React.FC = () => {
 
       {/* Name & Username */}
       <div className="text-center mb-6">
-        <h2 className="text-xl font-bold text-white mb-1">mohammad reza</h2>
-        <p className="text-gray-400 text-sm">morez.mehdizadeh1999</p>
+        <h2 className="text-xl font-bold text-white my-1">{user?.name}</h2>
+        <p className="text-gray-400 text-sm">{user?.email}</p>
       </div>
 
       {/* Divider */}

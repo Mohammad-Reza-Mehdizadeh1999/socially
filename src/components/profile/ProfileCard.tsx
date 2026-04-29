@@ -1,6 +1,8 @@
 import { MapPin, Link as LinkIcon, Calendar, UserPlus } from "lucide-react";
 import type { UserProfile } from "../../types/ProfileTypes";
 import { getTimeAgo } from "../../utiles/geTimeAgo";
+import EditProfileModal from "./EditProfileModal";
+import { useState } from "react";
 
 interface ProfileCardProps {
   profileData?: UserProfile;
@@ -8,7 +10,8 @@ interface ProfileCardProps {
 }
 
 const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+    
   return (
     <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800 max-w-2xl mx-auto">
       {/* Avatar */}
@@ -54,7 +57,10 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
       </div>
 
       {/* Edit Profile Button */}
-      <button className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg font-medium transition-colors mb-6">
+      <button
+        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-200 cursor-pointer hover:bg-gray-300 text-gray-900 rounded-lg font-medium transition-colors mb-6"
+        onClick={() => setIsModalOpen(true)}
+      >
         <UserPlus className="w-4 h-4" />
         Edit Profile
       </button>
@@ -79,6 +85,11 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
           <span className="text-sm">{getTimeAgo("2026-02-23T11:30:00Z")}</span>
         </div>
       </div>
+
+      <EditProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

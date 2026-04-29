@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, MessageCircle, Trash2 } from 'lucide-react';
 import type { ProfilePostsType } from '../../types/ProfileTypes';
+import { getTimeAgo } from '../../utiles/geTimeAgo';
 
 interface ProfilePostsProps {
   posts: ProfilePostsType[];
@@ -9,22 +10,6 @@ interface ProfilePostsProps {
 
 const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
 
-    const getTimeAgo = (dateString: string): string => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (seconds < 60) return "just now";
-    
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-    
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    
-    const days = Math.floor(hours / 24);
-    return `${days} day${days > 1 ? "s" : ""} ago`;
-  };
 
   if (posts.length === 0) {
     return (
@@ -54,23 +39,23 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
               {/* User Info */}
               <div>
                 <h3 className="font-semibold text-white text-sm">
-                  {post.author.name}
+                  {post?.author.name}
                 </h3>
                 <p className="text-gray-400 text-xs">
-                  {post.author.email}
+                  {post?.author.email}
                 </p>
               </div>
 
               {/* Time */}
               <span className="text-gray-500 text-xs">
-                {getTimeAgo(post.createdAt)}
+                {getTimeAgo(post?.createdAt)}
               </span>
             </div>
 
             {/* Delete Button */}
             {onDeletePost && (
               <button
-                onClick={() => onDeletePost(post.id)}
+                onClick={() => onDeletePost(post?.id)}
                 className="p-2 text-gray-500 hover:text-red-500 transition-colors"
                 aria-label="Delete post"
               >

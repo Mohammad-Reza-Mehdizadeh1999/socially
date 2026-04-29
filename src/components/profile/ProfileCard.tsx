@@ -1,30 +1,13 @@
-import { MapPin, Link as LinkIcon, Calendar, UserPlus } from 'lucide-react';
-import type { UserProfile } from '../../types/ProfileTypes';
-
+import { MapPin, Link as LinkIcon, Calendar, UserPlus } from "lucide-react";
+import type { UserProfile } from "../../types/ProfileTypes";
+import { getTimeAgo } from "../../utiles/geTimeAgo";
 
 interface ProfileCardProps {
   profileData?: UserProfile;
-  userPostsLength?:number;
+  userPostsLength?: number;
 }
 
-const ProfileCard = ({ profileData , userPostsLength }: ProfileCardProps) => {
-
-    const getTimeAgo = (dateString: string): string => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (seconds < 60) return "just now";
-    
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-    
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    
-    const days = Math.floor(hours / 24);
-    return `${days} day${days > 1 ? "s" : ""} ago`;
-  };
+const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
 
   return (
     <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800 max-w-2xl mx-auto">
@@ -37,7 +20,9 @@ const ProfileCard = ({ profileData , userPostsLength }: ProfileCardProps) => {
 
       {/* Name & Username */}
       <div className="text-center mb-6">
-        <h2 className="text-xl font-bold text-white mb-1">{profileData?.name}</h2>
+        <h2 className="text-xl font-bold text-white mb-1">
+          {profileData?.name}
+        </h2>
         <p className="text-gray-400 text-sm">{profileData?.email}</p>
       </div>
 
@@ -45,19 +30,25 @@ const ProfileCard = ({ profileData , userPostsLength }: ProfileCardProps) => {
       <div className="grid grid-cols-3 gap-4 mb-6">
         {/* Followings */}
         <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
-          <div className="text-2xl font-bold text-white mb-1">{profileData?._count.followings}</div>
+          <div className="text-2xl font-bold text-white mb-1">
+            {profileData?._count.followings}
+          </div>
           <div className="text-gray-400 text-sm">Followings</div>
         </div>
 
         {/* Followers */}
         <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
-          <div className="text-2xl font-bold text-white mb-1">{profileData?._count?.followers}</div>
+          <div className="text-2xl font-bold text-white mb-1">
+            {profileData?._count?.followers}
+          </div>
           <div className="text-gray-400 text-sm">Followers</div>
         </div>
 
         {/* Posts */}
         <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
-          <div className="text-2xl font-bold text-white mb-1">{userPostsLength}</div>
+          <div className="text-2xl font-bold text-white mb-1">
+            {userPostsLength}
+          </div>
           <div className="text-gray-400 text-sm">Posts</div>
         </div>
       </div>

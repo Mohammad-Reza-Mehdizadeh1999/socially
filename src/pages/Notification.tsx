@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Heart, MessageCircle, UserPlus } from "lucide-react";
 import type { Notification, NotificationType } from "../types/NotificationTypes";
+import { getTimeAgo } from "../utiles/geTimeAgo";
 
 export default function NotificationsPage() {
   const [notificationsData, setNotificationsData] = useState<Notification[]>([
@@ -67,25 +68,6 @@ export default function NotificationsPage() {
   ]);
 
   const unreadCount = notificationsData.filter((n) => !n.read).length;
-
-
-  const getTimeAgo = (dateString: string): string => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (seconds < 60) return "less than a minute ago";
-    
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-    
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    
-    const days = Math.floor(hours / 24);
-    return `${days} day${days > 1 ? "s" : ""} ago`;
-  };
-
 
   const getNotificationIcon = (type: NotificationType) => {
     switch (type) {
@@ -201,10 +183,10 @@ export default function NotificationsPage() {
                     </div>
 
                     {/* Post Content (if exists) */}
-                    {notification.post && (
+                    {notification?.post && (
                       <div className="mb-2">
                         <p className="text-gray-300 text-sm leading-relaxed">
-                          {notification.post.content}
+                          {notification?.post.content}
                         </p>
                       </div>
                     )}
@@ -213,14 +195,14 @@ export default function NotificationsPage() {
                     {notification.comment && (
                       <div className="mb-2 pl-3 border-l-2 border-gray-700">
                         <p className="text-gray-300 text-sm leading-relaxed">
-                          {notification.comment.content}
+                          {notification?.comment.content}
                         </p>
                       </div>
                     )}
 
                     {/* Time */}
                     <p className="text-xs text-gray-500">
-                      {getTimeAgo(notification.createdAt)}
+                      {getTimeAgo(notification?.createdAt)}
                     </p>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, MessageCircle } from 'lucide-react';
 import type { LikedPost } from '../../types/ProfileTypes';
+import { getTimeAgo } from '../../utiles/geTimeAgo';
 
 interface ProfileLikesProps {
   likes: LikedPost[];
@@ -8,22 +9,6 @@ interface ProfileLikesProps {
 
 const ProfileLikes: React.FC<ProfileLikesProps> = ({ likes }) => {
 
-    const getTimeAgo = (dateString: string): string => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (seconds < 60) return "just now";
-    
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-    
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    
-    const days = Math.floor(hours / 24);
-    return `${days} day${days > 1 ? "s" : ""} ago`;
-  };
 
   if (likes.length === 0) {
     return (
@@ -54,13 +39,13 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ likes }) => {
               {/* User Info */}
               <div>
                 <h3 className="font-semibold text-white text-sm">
-                  {post.author.name}
+                  {post?.author.name}
                 </h3>
                 <p className="text-gray-400 text-xs">
-                  {post.author.email}
+                  {post?.author.email}
                 </p>
                 <span className="text-gray-500 text-xs">
-                  {getTimeAgo(post.createdAt)}
+                  {getTimeAgo(post?.createdAt)}
                 </span>
               </div>
             </div>
@@ -68,7 +53,7 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ likes }) => {
             {/* Content */}
             <div className="mb-4">
               <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
-                {post.content}
+                {post?.content}
               </p>
             </div>
 

@@ -89,6 +89,7 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
       <EditProfileModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        profileData={profileData}
       />
     </div>
   );

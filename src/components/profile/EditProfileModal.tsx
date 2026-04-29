@@ -1,18 +1,20 @@
 import { useState } from 'react';
+import type { EditProfileFormData, UserProfile } from '../../types/ProfileTypes';
 
 interface EditProfileModalPropsTypes {
     isOpen : boolean;
-    onClose : ()=> void
+    onClose : ()=> void;
+    profileData? : UserProfile
 }
 
-const EditProfileModal = ({ isOpen, onClose } : EditProfileModalPropsTypes) => {
+const EditProfileModal = ({ isOpen, onClose , profileData } : EditProfileModalPropsTypes) => {
 
-    const [formData, setFormData] = useState({
-    name: '',
-    bio: '',
-    location: '',
-    website: ''
-  });
+    const [formData, setFormData] = useState<EditProfileFormData>({
+    name: profileData?.name ?? '',
+    bio: profileData?.bio ?? '',
+    location: profileData?.location ?? '',
+    website: profileData?.website ?? '',
+    });
 
   const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,7 +48,7 @@ const EditProfileModal = ({ isOpen, onClose } : EditProfileModalPropsTypes) => {
         <form onSubmit={handleSubmit} className="space-y-4 " autoComplete="false">
           {/* Name Input */}
           <div>
-            <label className="block text-sm font-medium text-white mb-2 ">Name</label>
+            <label className="block text-sm font-medium text-blue-500 mb-2 ">Name</label>
             <input
               type="text"
               name="name"
@@ -59,7 +61,7 @@ const EditProfileModal = ({ isOpen, onClose } : EditProfileModalPropsTypes) => {
 
           {/* Bio Input */}
           <div>
-            <label className="block text-sm font-medium text-white mb-2">Email</label>
+            <label className="block text-sm font-medium text-blue-500 mb-2">Email</label>
             <input
               name="bio"
               value={formData.bio}
@@ -71,7 +73,7 @@ const EditProfileModal = ({ isOpen, onClose } : EditProfileModalPropsTypes) => {
 
           {/* Location Input */}
           <div>
-            <label className="block text-sm font-medium text-white mb-2">Location</label>
+            <label className="block text-sm font-medium text-blue-500 mb-2">Location</label>
             <input
               type="text"
               name="location"
@@ -84,7 +86,7 @@ const EditProfileModal = ({ isOpen, onClose } : EditProfileModalPropsTypes) => {
 
           {/* Website Input */}
           <div>
-            <label className="block text-sm font-medium text-white mb-2">Website</label>
+            <label className="block text-sm font-medium text-blue-500 mb-2">Website</label>
             <input
               type="url"
               name="website"

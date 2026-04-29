@@ -63,3 +63,11 @@ export interface LikedPost {
   createdAt: string;
   post: ProfilePostsType;
 }
+
+
+export type EditProfileFormData = {
+  name: string;
+  bio: string;
+  location: string;
+  website: string;
+};

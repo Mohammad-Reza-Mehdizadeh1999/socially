@@ -70,13 +70,13 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
         {/* Location */}
         <div className="flex items-center gap-2 text-gray-400">
           <MapPin size={18} />
-          <span className="text-sm">No location</span>
+          <span className="text-sm">{profileData?.location}</span>
         </div>
 
         {/* Website */}
         <div className="flex items-center gap-2 text-gray-400">
           <LinkIcon size={18} />
-          <span className="text-sm">No website</span>
+          <span className="text-sm">{profileData?.website}</span>
         </div>
 
         {/* Joined Date */}

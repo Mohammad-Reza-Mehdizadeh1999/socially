@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import type { EditProfileFormData, UserProfile } from '../../types/ProfileTypes';
+import { UpdateUserProfileRequest } from '../../services/profileServices';
+import { useAuthStore } from '../../store/authStore';
+import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 interface EditProfileModalPropsTypes {
     isOpen : boolean;
@@ -9,12 +13,17 @@ interface EditProfileModalPropsTypes {
 
 const EditProfileModal = ({ isOpen, onClose , profileData } : EditProfileModalPropsTypes) => {
 
-    const [formData, setFormData] = useState<EditProfileFormData>({
+  const {user} = useAuthStore()
+
+  const queryClient = useQueryClient()
+
+
+  const [formData, setFormData] = useState<EditProfileFormData>({
     name: profileData?.name ?? '',
     bio: profileData?.bio ?? '',
     location: profileData?.location ?? '',
     website: profileData?.website ?? '',
-    });
+  });
 
   const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,9 +33,14 @@ const EditProfileModal = ({ isOpen, onClose , profileData } : EditProfileModalPr
     }));
   };
 
-  const handleSubmit = (e : React.SubmitEvent<HTMLFormElement>) => {
+  const  handleSubmit = async (e : React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Sending to Backend:", formData);
+    const res = await UpdateUserProfileRequest(user.id , formData)
+    if(res.status === 200){
+      toast.success("profile updated successfully")
+    }
+    queryClient.invalidateQueries({ queryKey: ["ProfileData"] });
     onClose(); 
   };
 
@@ -88,7 +102,7 @@ const EditProfileModal = ({ isOpen, onClose , profileData } : EditProfileModalPr
           <div>
             <label className="block text-sm font-medium text-blue-500 mb-2">Website</label>
             <input
-              type="url"
+              type="text"
               name="website"
               value={formData.website}
               onChange={handleChange}

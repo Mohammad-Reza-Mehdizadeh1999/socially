@@ -3,14 +3,21 @@ import React from "react";
 import { Heart, MessageCircle, Trash2 } from "lucide-react";
 import type { ProfilePostsType } from "../../types/ProfileTypes";
 import { getTimeAgo } from "../../utiles/geTimeAgo";
-import { likePostRequest } from "../../services/postServices";
+import { deletePostRequest, likePostRequest } from "../../services/postServices";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "../../store/authStore";
 
 interface ProfilePostsProps {
   posts: ProfilePostsType[];
 }
 
 const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
+
+  const queryClient = useQueryClient()
+
+  const {user} = useAuthStore()
+
   const handlelikeClick = async (postId: string) => {
     try {
       await likePostRequest(postId);
@@ -21,7 +28,9 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
 
   const deletePostHandler = async (postId : string) => {
     try {
-      await likePostRequest(postId);
+      await deletePostRequest(postId);
+      await queryClient.invalidateQueries({ queryKey: ["UserPosts", user.id] })
+      toast.success("post deleted successfully");
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -70,7 +79,7 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
 
             <button
               onClick={() => deletePostHandler(post?.id)}
-              className="p-2 text-gray-500 hover:text-red-500 transition-colors"
+              className="p-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer"
               aria-label="Delete post"
             >
               <Trash2 className="w-4 h-4" />

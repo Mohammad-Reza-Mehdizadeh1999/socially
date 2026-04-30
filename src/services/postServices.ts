@@ -25,3 +25,12 @@ export const likePostRequest = async (postId: string) => {
   }
 };
 
+export const deletePostRequest = async (postId: string) => {
+  try {
+    const res = await api.delete(`/posts/${postId}`);
+    return res.data;
+  } catch (error: any) {
+    throw error.response?.data; 
+  }
+};
+

@@ -1,15 +1,31 @@
-import React from 'react';
-import { Heart, MessageCircle, Trash2 } from 'lucide-react';
-import type { ProfilePostsType } from '../../types/ProfileTypes';
-import { getTimeAgo } from '../../utiles/geTimeAgo';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from "react";
+import { Heart, MessageCircle, Trash2 } from "lucide-react";
+import type { ProfilePostsType } from "../../types/ProfileTypes";
+import { getTimeAgo } from "../../utiles/geTimeAgo";
+import { likePostRequest } from "../../services/postServices";
+import toast from "react-hot-toast";
 
 interface ProfilePostsProps {
   posts: ProfilePostsType[];
-  onDeletePost?: (postId: string) => void;
 }
 
-const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
+const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
+  const handlelikeClick = async (postId: string) => {
+    try {
+      await likePostRequest(postId);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
 
+  const deletePostHandler = async (postId : string) => {
+    try {
+      await likePostRequest(postId);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
 
   if (posts.length === 0) {
     return (
@@ -41,9 +57,7 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
                 <h3 className="font-semibold text-white text-sm">
                   {post?.author.name}
                 </h3>
-                <p className="text-gray-400 text-xs">
-                  {post?.author.email}
-                </p>
+                <p className="text-gray-400 text-xs">{post?.author.email}</p>
               </div>
 
               {/* Time */}
@@ -53,15 +67,14 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
             </div>
 
             {/* Delete Button */}
-            {onDeletePost && (
-              <button
-                onClick={() => onDeletePost(post?.id)}
-                className="p-2 text-gray-500 hover:text-red-500 transition-colors"
-                aria-label="Delete post"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            )}
+
+            <button
+              onClick={() => deletePostHandler(post?.id)}
+              className="p-2 text-gray-500 hover:text-red-500 transition-colors"
+              aria-label="Delete post"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
 
           {/* Content */}
@@ -73,11 +86,14 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts, onDeletePost }) => {
 
           {/* Stats */}
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 text-gray-400">
+            <div
+              className="flex items-center gap-2 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
+              onClick={() => handlelikeClick(post?.id)}
+            >
               <Heart className="w-4 h-4" />
               <span className="text-sm">{post._count.likes}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors cursor-pointer">
               <MessageCircle className="w-4 h-4" />
               <span className="text-sm">{post._count.comments}</span>
             </div>

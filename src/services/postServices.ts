@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import api from "./axiosConfig";
 
 type createPostPayloadType = {
@@ -14,3 +15,13 @@ export const getAllPostRequest = async () => {
   const res = await api.get("/posts");  
   return res.data;
 };
+
+export const likePostRequest = async (postId: string) => {
+  try {
+    const res = await api.patch(`/posts/${postId}`);
+    return res.data;
+  } catch (error: any) {
+    throw error.response?.data; 
+  }
+};
+

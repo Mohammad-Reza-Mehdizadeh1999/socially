@@ -7,7 +7,7 @@ const SideProfile: React.FC = () => {
 
   const { user } = useAuthStore();
   
-  const {data: profileData } = useGetProfileData(user.id!)
+  const {data: profileData } = useGetProfileData(user?.id)
   
   console.log("assasasasasas",profileData);
   

@@ -2,6 +2,8 @@ import React from 'react';
 import { Heart, MessageCircle } from 'lucide-react';
 import type { LikedPost } from '../../types/ProfileTypes';
 import { getTimeAgo } from '../../utiles/geTimeAgo';
+import { likePostRequest } from '../../services/postServices';
+import toast from 'react-hot-toast';
 
 interface ProfileLikesProps {
   likes: LikedPost[];
@@ -9,6 +11,10 @@ interface ProfileLikesProps {
 
 const ProfileLikes: React.FC<ProfileLikesProps> = ({ likes }) => {
 
+  const handleRemoveLike = async (postId : string) => {
+    await likePostRequest(postId)
+    toast.success("like removed successfully")
+  }
 
   if (likes.length === 0) {
     return (
@@ -59,7 +65,10 @@ const ProfileLikes: React.FC<ProfileLikesProps> = ({ likes }) => {
 
             {/* Stats */}
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2 text-red-500">
+              <div 
+                className="flex items-center gap-2 text-red-400 hover:text-red-600 cursor-pointer"
+                onClick={() => handleRemoveLike(post.id)}
+                >
                 <Heart className="w-4 h-4" fill="currentColor" />
                 <span className="text-sm font-medium">{post._count.likes}</span>
               </div>

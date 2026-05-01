@@ -4,6 +4,9 @@ import type { LikedPost } from '../../types/ProfileTypes';
 import { getTimeAgo } from '../../utiles/geTimeAgo';
 import { likePostRequest } from '../../services/postServices';
 import toast from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
+import { Await } from 'react-router';
+import { useAuthStore } from '../../store/authStore';
 
 interface ProfileLikesProps {
   likes: LikedPost[];
@@ -11,9 +14,14 @@ interface ProfileLikesProps {
 
 const ProfileLikes: React.FC<ProfileLikesProps> = ({ likes }) => {
 
+  const queryClient = useQueryClient()
+
+  const {user} = useAuthStore()
+
   const handleRemoveLike = async (postId : string) => {
     await likePostRequest(postId)
     toast.success("like removed successfully")
+    await queryClient.invalidateQueries({queryKey: ["UserLikes", user?.id]})
   }
 
   if (likes.length === 0) {

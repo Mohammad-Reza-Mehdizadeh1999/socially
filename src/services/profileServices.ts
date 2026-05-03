@@ -7,6 +7,10 @@ export const GetProfileDataRequest = (userId : string): Promise<AxiosResponse<an
   return api.get(`/users/${userId}`);
 };
 
+export const GetProfileDataByUserNameRequest = (userName : string): Promise<AxiosResponse<any>> => {
+  return api.get(`/users/${userName}/profile`);
+};
+
 
 export const GetUserPostsRequest = (userId : string): Promise<AxiosResponse<any>> => {
   return api.get(`/users/${userId}/posts`);

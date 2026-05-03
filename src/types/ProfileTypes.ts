@@ -71,3 +71,29 @@ export type EditProfileFormData = {
   location: string;
   website: string;
 };
+
+
+export interface UserDataByUsername {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  image: string | null;
+  bio: string;
+  location: string;
+  website: string;
+  createdAt: string; 
+  updatedAt: string;
+  _count: UserCounts;
+  followers: Follower[];
+}
+
+export interface UserCounts {
+  followers: number;
+  followings: number;
+  posts: number;
+}
+
+export interface Follower {
+  followerId: string;
+}

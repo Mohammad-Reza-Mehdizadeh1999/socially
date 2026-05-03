@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import type {  UserProfile } from "../types/ProfileTypes";
+import type {  UserDataByUsername } from "../types/ProfileTypes";
 import { GetProfileDataByUserNameRequest } from "../services/profileServices";
 
 export const useGetProfileData = (userName: string) => {
-  return useQuery<UserProfile>({
+  return useQuery<UserDataByUsername>({
     queryKey: ["ProfileDataUserName", userName],
     queryFn: async () => {
       const res = await GetProfileDataByUserNameRequest(userName);

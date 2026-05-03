@@ -6,6 +6,7 @@ import { logoutRequest } from "../services/authService";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 import { useQueryClient } from "@tanstack/react-query";
+import { splitUsername } from "../utiles/splitUsername";
 
 const Header: React.FC = () => {
 
@@ -67,7 +68,7 @@ const Header: React.FC = () => {
   const navLinks = [
     { path: "/", icon: Home, label: "Home" },
     { path: "/notifications", icon: Bell, label: "Notifications" },
-    { path: `/profile/${user?.email.split("@")[0]}`, icon: User, label: "Profile" },
+    { path: `/profile/${splitUsername(user?.email)}`, icon: User, label: "Profile" },
   ];
 
   return (

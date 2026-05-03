@@ -1,19 +1,22 @@
 import { useParams } from "react-router";
 import ProfileCard from "../components/profile/ProfileCard";
 import ProfileDetails from "../components/profile/ProfileDetails";
-import { useGetProfileData } from "../hooks/useGetProfileData";
 import { useGetUserPosts } from "../hooks/useGetUserPosts";
 import { useGetUserLikes } from "../hooks/useGetUserLikes";
+import { useGetProfileDataByUsername } from "../hooks/useGetProfileDataByUsername";
+import { useAuthStore } from "../store/authStore";
 
 export default function ProfilePage() {
 
-  const {userId} = useParams()
+  const {userName} = useParams()
 
-  const {data: profileData , isLoading } = useGetProfileData(userId!)
+  const {user} = useAuthStore()
 
-  const {data: profilePostsData } = useGetUserPosts(userId!)
+  const {data: profileData , isLoading } = useGetProfileDataByUsername(userName!)
 
-  const {data: profileLikesData } = useGetUserLikes(userId!)
+  const {data: profilePostsData } = useGetUserPosts(user?.id)
+
+  const {data: profileLikesData } = useGetUserLikes(user?.id)
   
 
   if (isLoading) return <div>Loading...</div>;

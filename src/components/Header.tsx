@@ -8,6 +8,7 @@ import { useAuthStore } from "../store/authStore";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Header: React.FC = () => {
+
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("theme");
@@ -66,7 +67,7 @@ const Header: React.FC = () => {
   const navLinks = [
     { path: "/", icon: Home, label: "Home" },
     { path: "/notifications", icon: Bell, label: "Notifications" },
-    { path: `/profile/${user?.id}`, icon: User, label: "Profile" },
+    { path: `/profile/${user?.email.split("@")[0]}`, icon: User, label: "Profile" },
   ];
 
   return (

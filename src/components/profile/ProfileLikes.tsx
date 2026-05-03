@@ -5,7 +5,6 @@ import { getTimeAgo } from '../../utiles/geTimeAgo';
 import { likePostRequest } from '../../services/postServices';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
-import { Await } from 'react-router';
 import { useAuthStore } from '../../store/authStore';
 
 interface ProfileLikesProps {

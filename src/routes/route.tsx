@@ -16,7 +16,7 @@ const routes: RouteObject[] = [
       { index: true, element: <Home /> },
       { path: "home", element: <Home /> },
       { path: "notifications", element: <NotificationsPage /> },
-      { path: "profile/:userId", element: <ProfilePage /> },
+      { path: "profile/:userName", element: <ProfilePage /> },
     ],
   },
 

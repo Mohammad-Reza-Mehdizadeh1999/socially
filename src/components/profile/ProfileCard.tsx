@@ -1,17 +1,20 @@
 import { MapPin, Link as LinkIcon, Calendar, UserPlus } from "lucide-react";
-import type { UserProfile } from "../../types/ProfileTypes";
+import type { UserDataByUsername } from "../../types/ProfileTypes";
 import { getTimeAgo } from "../../utiles/geTimeAgo";
 import EditProfileModal from "./EditProfileModal";
 import { useState } from "react";
+import UserProfileFollowersModal from "./UserProfileFollowersModal";
 
 interface ProfileCardProps {
-  profileData?: UserProfile;
+  profileData?: UserDataByUsername;
   userPostsLength?: number;
 }
 
 const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
+
+  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-    
+
   return (
     <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800 max-w-2xl mx-auto">
       {/* Avatar */}
@@ -41,8 +44,11 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
 
         {/* Followers */}
         <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
-          <div className="text-2xl font-bold text-white mb-1">
-            {profileData?._count?.followers}
+          <div 
+            className="text-2xl font-bold text-white mb-1"
+            onClick={() => setIsFollowersModalOpen(true)}
+          >
+              {profileData?._count?.followers}
           </div>
           <div className="text-gray-400 text-sm">Followers</div>
         </div>
@@ -92,7 +98,11 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
         profileData={profileData}
       />
 
-      
+      <UserProfileFollowersModal
+        isOpen={isFollowersModalOpen}
+        onClose={() => setIsFollowersModalOpen(false)}
+        followers={profileData?.followers}
+      />
     </div>
   );
 };

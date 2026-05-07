@@ -91,6 +91,8 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
         onClose={() => setIsModalOpen(false)}
         profileData={profileData}
       />
+
+      
     </div>
   );
 };

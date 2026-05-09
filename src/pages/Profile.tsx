@@ -23,6 +23,7 @@ export default function ProfilePage() {
 
   if (isLoading) return <div>Loading...</div>;
   if (isLoadingUserPosts) return <div>Loading user posts...</div>;
+  if (isLoadingUserLikes) return <div>Loading user likes...</div>;
   if (isError) return <div className="text-red-500">fail to load user profile</div>;
   if (isErrorUserPosts) return <div className="text-red-500">fail to load user posts</div>;
   if (isErrorUserLikes) return <div className="text-red-500">fail to load user likes</div>;

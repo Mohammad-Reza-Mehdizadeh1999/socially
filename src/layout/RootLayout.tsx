@@ -4,10 +4,10 @@ import Header from "../components/Header";
 import { useSessionQuery } from "../hooks/useSessionQuery";
 
 const RootLayout = () => {
+  
   const { isLoading } = useSessionQuery();
 
   const location = useLocation();
-  console.log(location.pathname);
 
   if (isLoading) return <div>Loading...</div>;
 

@@ -4,6 +4,7 @@ import { getTimeAgo } from "../../utiles/geTimeAgo";
 import EditProfileModal from "./EditProfileModal";
 import { useState } from "react";
 import UserProfileFollowersModal from "./UserProfileFollowersModal";
+import { useAuthStore } from "../../store/authStore";
 
 interface ProfileCardProps {
   profileData?: UserDataByUsername;
@@ -14,6 +15,17 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
 
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { user } = useAuthStore();
+
+  const isUserInOwnProfile = user?.id === profileData?.id;
+
+  
+  
+  const handleToggleFollow = (profileId : string | undefined) => {
+    console.log(profileId);
+    
+  }
 
   return (
     <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800 max-w-2xl mx-auto">
@@ -44,11 +56,11 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
 
         {/* Followers */}
         <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
-          <div 
+          <div
             className="text-2xl font-bold text-white mb-1"
             onClick={() => setIsFollowersModalOpen(true)}
           >
-              {profileData?._count?.followers}
+            {profileData?._count?.followers}
           </div>
           <div className="text-gray-400 text-sm">Followers</div>
         </div>
@@ -62,14 +74,26 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
         </div>
       </div>
 
-      {/* Edit Profile Button */}
-      <button
-        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-200 cursor-pointer hover:bg-gray-300 text-gray-900 rounded-lg font-medium transition-colors mb-6"
-        onClick={() => setIsModalOpen(true)}
-      >
-        <UserPlus className="w-4 h-4" />
-        Edit Profile
-      </button>
+      {/* Edit Profile and follow Button */}
+
+      {isUserInOwnProfile ? (
+        <button
+          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-200 cursor-pointer hover:bg-gray-300 text-gray-900 rounded-lg font-medium transition-colors mb-6"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <UserPlus className="w-4 h-4" />
+          Edit Profile
+        </button>
+      ) : (
+        <button
+          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-200 cursor-pointer hover:bg-gray-300 text-gray-900 rounded-lg font-medium transition-colors mb-6"
+          onClick={() => handleToggleFollow(profileData?.id)}
+        >
+          <UserPlus className="w-4 h-4" />
+          Follow
+        </button>
+      )}
+
 
       {/* Additional Info */}
       <div className="space-y-3 pt-6 border-t border-gray-800">

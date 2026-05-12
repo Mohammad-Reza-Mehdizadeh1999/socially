@@ -6,33 +6,21 @@ import {createNewPostRequest} from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useGetAllPosts } from "../../hooks/useGetAllPosts";
 import type { Post } from "../../types/allPosts";
+import { getTimeAgo } from "../../utiles/geTimeAgo";
+import { Link } from "react-router";
+import { splitUsername } from "../../utiles/splitUsername";
 
 const AllPosts = () => {
+
   const [newPostText, setNewPostText] = useState("");
-  const [openCommentPostId, setOpenCommentPostId] = useState<string | null>(
-    null,
-  );
+  const [openCommentPostId, setOpenCommentPostId] = useState<string | null>(null,);
   const [commentInput, setcommentInput] = useState<string>();
 
-  const getRelativeTime = (dateString: string) => {
-    const now = new Date();
-    const created = new Date(dateString);
-    const secTime = Math.floor((now.getTime() - created.getTime()) / 1000);
-
-    if (secTime < 60) return "less than a minute ago";
-    if (secTime < 3600) return `${Math.floor(secTime / 60)} minutes ago`;
-    if (secTime < 86400) return `${Math.floor(secTime / 3600)} hours ago`;
-    return `${Math.floor(secTime / 86400)} days ago`;
-  };
-
-  const handleDeletePost = (postId: string) => {
-    console.log(postId);
-  };
-
+  
   const { data, isLoading, isError } = useGetAllPosts();
-
+  
   const allPosts = data?.data ?? [];
-
+  
   async function handleCreatePost() {
     const payload = {
       content: newPostText,
@@ -46,6 +34,10 @@ const AllPosts = () => {
       toast.error("create new post failed. Please try again");
     }
   }
+  
+  const handleDeletePost = (postId: string) => {
+    console.log(postId);
+  };
 
   async function handleAddComment(postId: string) {
     console.log(postId);
@@ -104,14 +96,14 @@ const AllPosts = () => {
                 <Avatar src={avatar} height={30} width={30}></Avatar>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-base font-medium dark:text-white">
+                    <Link to={`/profile/${splitUsername(post.author.email)}`} className="text-base font-medium dark:text-white">
                       {post.author.name}
-                    </span>
+                    </Link>
                     <span className="text-sm leading-5 text-secondery-light dark:text-secondary-dark">
                       {post.author.email}
                     </span>
                     <span className="text-sm leading-5 text-secondery-light dark:text-secondary-dark">
-                      {getRelativeTime(post.createdAt)}
+                      {getTimeAgo(post?.createdAt)}
                     </span>
                   </div>
                   <span className="dark:text-white">{post.content}</span>
@@ -165,7 +157,7 @@ const AllPosts = () => {
                           {comment.author.email}
                         </span>
                         <span className="text-sm leading-5 text-secondery-light dark:text-secondary-dark">
-                          {getRelativeTime(comment.createdAt)}
+                          {getTimeAgo(comment?.createdAt)}
                         </span>
                       </div>
                       <span className="dark:text-white">{comment.content}</span>

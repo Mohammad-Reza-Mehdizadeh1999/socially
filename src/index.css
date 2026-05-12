@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Yekan";
+  src: url("../src/assets/fonts/IRANYekanX-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: "Yekan" , sans-serif;
+}

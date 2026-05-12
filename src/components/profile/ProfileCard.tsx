@@ -47,7 +47,7 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         {/* Followings */}
-        <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
+        <div className="text-center  hover:opacity-80 transition-opacity">
           <div className="text-2xl font-bold text-white mb-1">
             {profileData?._count.followings}
           </div>
@@ -66,7 +66,7 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
         </div>
 
         {/* Posts */}
-        <div className="text-center cursor-pointer hover:opacity-80 transition-opacity">
+        <div className="text-center  hover:opacity-80 transition-opacity">
           <div className="text-2xl font-bold text-white mb-1">
             {userPostsLength}
           </div>

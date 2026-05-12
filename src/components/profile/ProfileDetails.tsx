@@ -8,10 +8,8 @@ interface ProfileDetailsProps {
   profileLikesData?: LikedPost[];
 }
 
-const ProfileDetails: React.FC<ProfileDetailsProps> = ({
-  profilePostsData = [],
-  profileLikesData = [],
-}) => {
+const ProfileDetails: React.FC<ProfileDetailsProps> = ({ profilePostsData = [], profileLikesData = []}) => {
+  
   const [activeTab, setActiveTab] = useState<ProfileTab>('posts');
 
   return (

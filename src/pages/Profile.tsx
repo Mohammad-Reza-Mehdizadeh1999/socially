@@ -4,19 +4,16 @@ import ProfileDetails from "../components/profile/ProfileDetails";
 import { useGetUserPosts } from "../hooks/useGetUserPosts";
 import { useGetUserLikes } from "../hooks/useGetUserLikes";
 import { useGetProfileDataByUsername } from "../hooks/useGetProfileDataByUsername";
-import { useAuthStore } from "../store/authStore";
 
 export default function ProfilePage() {
 
   const {userName} = useParams()
 
-  const {user} = useAuthStore()
-
   const {data: profileData , isLoading } = useGetProfileDataByUsername(userName!)
 
-  const {data: profilePostsData } = useGetUserPosts(user?.id)
+  const {data: profilePostsData } = useGetUserPosts(profileData?.id)
 
-  const {data: profileLikesData } = useGetUserLikes(user?.id)
+  const {data: profileLikesData } = useGetUserLikes(profileData?.id)
   
 
   if (isLoading) return <div>Loading...</div>;

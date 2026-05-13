@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Heart, MessageCircle, Trash2, X } from "lucide-react";
 import type { ProfilePostsType } from "../../types/ProfileTypes";
 import { getTimeAgo } from "../../utiles/geTimeAgo";
-import {createNewCommentForPostRequest, deletePostRequest,likePostRequest} from "../../services/postServices";
+import {createNewCommentForPostRequest,deletePostRequest,likePostRequest} from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store/authStore";
@@ -26,14 +26,16 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
 
   const handleAddNewComment = async () => {
     try {
-      await createNewCommentForPostRequest(openComments! , { content : newCommentText })
-      await queryClient.invalidateQueries({ queryKey: ["UserPosts"] })
-      toast.success("comment created successfully")
-      setNewCommentText("")
+      await createNewCommentForPostRequest(openComments!, {
+        content: newCommentText,
+      });
+      await queryClient.invalidateQueries({ queryKey: ["UserPosts"] });
+      toast.success("comment created successfully");
+      setNewCommentText("");
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const handlelikeClick = async (postId: string) => {
     try {
@@ -93,14 +95,15 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
             </div>
 
             {/* Delete Button */}
-
-            <button
-              onClick={() => deletePostHandler(post?.id)}
-              className="p-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer"
-              aria-label="Delete post"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            {user.id === post.author.id && (
+              <button
+                onClick={() => deletePostHandler(post?.id)}
+                className="p-2 text-gray-500 hover:text-red-500 transition-colors cursor-pointer"
+                aria-label="Delete post"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
           {/* Content */}
@@ -173,9 +176,10 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
                   placeholder="Write a comment..."
                   className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white outline-none"
                 />
-                <button 
+                <button
                   onClick={() => handleAddNewComment()}
-                  className="bg-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                  className="bg-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+                >
                   Send
                 </button>
               </div>

@@ -5,6 +5,10 @@ type createPostPayloadType = {
     content : string
 }
 
+type createNewCommentForPostPayloadType = {
+    content : string
+}
+
 export const createNewPostRequest = async (payload : createPostPayloadType) => {
   const res = await api.post("/posts" , payload);  
   return res.data;
@@ -28,6 +32,15 @@ export const likePostRequest = async (postId: string) => {
 export const deletePostRequest = async (postId: string) => {
   try {
     const res = await api.delete(`/posts/${postId}`);
+    return res.data;
+  } catch (error: any) {
+    throw error.response?.data; 
+  }
+};
+
+export const createNewCommentForPostRequest = async (postId: string , commentText : createNewCommentForPostPayloadType) => {
+  try {
+    const res = await api.post(`/posts/${postId}/comment`, commentText);
     return res.data;
   } catch (error: any) {
     throw error.response?.data; 

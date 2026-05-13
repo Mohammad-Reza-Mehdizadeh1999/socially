@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import { Heart, MessageCircle, Trash2, X } from "lucide-react";
 import type { ProfilePostsType } from "../../types/ProfileTypes";
 import { getTimeAgo } from "../../utiles/geTimeAgo";
-import {
-  deletePostRequest,
-  likePostRequest,
-} from "../../services/postServices";
+import {deletePostRequest,likePostRequest} from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store/authStore";
@@ -26,6 +23,11 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
   const toggleComments = (postId: string) => {
     setOpenComments((prev) => (prev === postId ? null : postId));
   };
+
+  const handleAddNewComment = () => {
+    console.log(openComments);
+    
+  }
 
   const handlelikeClick = async (postId: string) => {
     try {
@@ -165,7 +167,9 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
                   placeholder="Write a comment..."
                   className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white outline-none"
                 />
-                <button className="bg-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                <button 
+                  onClick={() => handleAddNewComment()}
+                  className="bg-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
                   Send
                 </button>
               </div>

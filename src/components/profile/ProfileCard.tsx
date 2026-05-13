@@ -28,7 +28,8 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
 
   const isUserInOwnProfile = user?.id === profileData?.id;
 
-  
+  const isUserFollowedByMe = profileData?.followers.some((f)=> f.followerId === user.id);
+
   const handleToggleFollow = async (profileId : string | undefined) => {
     try {
       const res = await toggleFollowRequest(profileId!)    
@@ -104,7 +105,7 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
           onClick={() => handleToggleFollow(profileData?.id)}
         >
           <UserPlus className="w-4 h-4" />
-          Follow
+          {isUserFollowedByMe ? "Unfollow" : "Follow"}
         </button>
       )}
 

@@ -23,3 +23,7 @@ export const GetUserLikesRequest = (userId : string): Promise<AxiosResponse<any>
 export const UpdateUserProfileRequest = (userId : string , data : EditProfileFormData): Promise<AxiosResponse<any>> => {
   return api.put(`/users/${userId}` , data);
 };
+
+export const toggleFollowRequest = (userId: string) => {
+  return api.patch(`/users/${userId}`);
+};

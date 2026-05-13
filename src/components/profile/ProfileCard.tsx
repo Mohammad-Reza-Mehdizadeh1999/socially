@@ -5,6 +5,8 @@ import EditProfileModal from "./EditProfileModal";
 import { useState } from "react";
 import UserProfileFollowersModal from "./UserProfileFollowersModal";
 import { useAuthStore } from "../../store/authStore";
+import { toggleFollowRequest } from "../../services/profileServices";
+import toast from "react-hot-toast";
 
 interface ProfileCardProps {
   profileData?: UserDataByUsername;
@@ -22,8 +24,14 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
 
   
   
-  const handleToggleFollow = (profileId : string | undefined) => {
-    console.log(profileId);
+  const handleToggleFollow = async (profileId : string | undefined) => {
+    try {
+      const res = await toggleFollowRequest(profileId!)    
+      toast.success(res?.data.message)
+    } catch (error) {
+      toast.error("please try again...")
+      console.error(error)
+    }
     
   }
 

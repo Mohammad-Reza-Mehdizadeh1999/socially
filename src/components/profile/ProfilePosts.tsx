@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Heart, MessageCircle, Trash2, X } from "lucide-react";
 import type { ProfilePostsType } from "../../types/ProfileTypes";
 import { getTimeAgo } from "../../utiles/geTimeAgo";
-import {deletePostRequest,likePostRequest} from "../../services/postServices";
+import {createNewCommentForPostRequest, deletePostRequest,likePostRequest} from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store/authStore";
@@ -24,9 +24,13 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
     setOpenComments((prev) => (prev === postId ? null : postId));
   };
 
-  const handleAddNewComment = () => {
-    console.log(openComments);
-    
+  const handleAddNewComment = async () => {
+    try {
+      await createNewCommentForPostRequest(openComments! , { content : newCommentText })
+      toast.success("comment created successfully")
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handlelikeClick = async (postId: string) => {

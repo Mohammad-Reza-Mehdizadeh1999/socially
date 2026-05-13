@@ -27,8 +27,8 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
   const handleAddNewComment = async () => {
     try {
       await createNewCommentForPostRequest(openComments! , { content : newCommentText })
+      await queryClient.invalidateQueries({ queryKey: ["UserPosts"] })
       toast.success("comment created successfully")
-      await queryClient.invalidateQueries({ queryKey: ["UserPosts", user.id] })
       setNewCommentText("")
     } catch (error) {
       console.error(error)

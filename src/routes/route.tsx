@@ -6,6 +6,7 @@ import NotificationsPage from "../pages/Notification";
 import ProfilePage from "../pages/Profile";
 import LoginPage from "../pages/login";
 import RegisterPage from "../pages/Register";
+import NotFoundPage from "../pages/NotFoundPage";
 
 
 const routes: RouteObject[] = [
@@ -22,6 +23,7 @@ const routes: RouteObject[] = [
 
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
+  { path: "*", element: <NotFoundPage /> }
 ];
 
 const router = createBrowserRouter(routes);

@@ -7,6 +7,8 @@ import UserProfileFollowersModal from "./UserProfileFollowersModal";
 import { useAuthStore } from "../../store/authStore";
 import { toggleFollowRequest } from "../../services/profileServices";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "react-router";
 
 interface ProfileCardProps {
   profileData?: UserDataByUsername;
@@ -14,6 +16,10 @@ interface ProfileCardProps {
 }
 
 const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
+
+  const {userName} = useParams()
+
+  const queryClient = useQueryClient()
 
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,11 +29,11 @@ const ProfileCard = ({ profileData, userPostsLength }: ProfileCardProps) => {
   const isUserInOwnProfile = user?.id === profileData?.id;
 
   
-  
   const handleToggleFollow = async (profileId : string | undefined) => {
     try {
       const res = await toggleFollowRequest(profileId!)    
       toast.success(res?.data.message)
+      await queryClient.invalidateQueries({ queryKey: ["ProfileDataUserName", userName] })
     } catch (error) {
       toast.error("please try again...")
       console.error(error)

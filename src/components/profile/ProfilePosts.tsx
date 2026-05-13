@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import { Heart, MessageCircle, Trash2 } from "lucide-react";
+import React, { useState } from "react";
+import { Heart, MessageCircle, Trash2, X } from "lucide-react";
 import type { ProfilePostsType } from "../../types/ProfileTypes";
 import { getTimeAgo } from "../../utiles/geTimeAgo";
-import { deletePostRequest, likePostRequest } from "../../services/postServices";
+import {
+  deletePostRequest,
+  likePostRequest,
+} from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store/authStore";
@@ -13,10 +16,15 @@ interface ProfilePostsProps {
 }
 
 const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
+  const queryClient = useQueryClient();
 
-  const queryClient = useQueryClient()
+  const { user } = useAuthStore();
 
-  const {user} = useAuthStore()
+  const [openComments, setOpenComments] = useState<string | null>(null);
+
+  const toggleComments = (postId: string) => {
+    setOpenComments((prev) => (prev === postId ? null : postId));
+  };
 
   const handlelikeClick = async (postId: string) => {
     try {
@@ -26,10 +34,10 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
     }
   };
 
-  const deletePostHandler = async (postId : string) => {
+  const deletePostHandler = async (postId: string) => {
     try {
       await deletePostRequest(postId);
-      await queryClient.invalidateQueries({ queryKey: ["UserPosts", user.id] })
+      await queryClient.invalidateQueries({ queryKey: ["UserPosts", user.id] });
       toast.success("post deleted successfully");
     } catch (error: any) {
       toast.error(error.message);
@@ -102,11 +110,64 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
               <Heart className="w-4 h-4" />
               <span className="text-sm">{post._count.likes}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors cursor-pointer">
+
+            <div
+              className="flex items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors cursor-pointer"
+              onClick={() => toggleComments(post.id)}
+            >
               <MessageCircle className="w-4 h-4" />
               <span className="text-sm">{post._count.comments}</span>
             </div>
           </div>
+
+          {openComments === post.id && (
+            <div className="mt-4 border-t border-gray-800 pt-4 space-y-3">
+              {/* close button */}
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setOpenComments(null)}
+                  className="text-gray-400 hover:text-red-500"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* comments list */}
+              {post.comments.length > 0 && (
+                <div className="space-y-3">
+                  {post.comments.map((comment) => (
+                    <div
+                      key={comment.id}
+                      className="bg-gray-800 p-3 rounded-lg text-sm"
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-white">
+                          {comment.author.name}
+                        </span>
+                        <span className="text-gray-500 text-xs">
+                          {getTimeAgo(comment.createdAt)}
+                        </span>
+                      </div>
+
+                      <p className="text-gray-300">{comment.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* add comment */}
+              <div className="flex gap-2 mt-2">
+                <input
+                  type="text"
+                  placeholder="Write a comment..."
+                  className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white outline-none"
+                />
+                <button className="bg-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                  Send
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>

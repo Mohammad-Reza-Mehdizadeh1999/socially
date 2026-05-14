@@ -3,9 +3,12 @@ import avatar from "../../assets/avatar.png";
 import { useGetRecommendedUsers } from "../../hooks/useGetRecommendedUsers";
 import { toggleFollowRequest } from "../../services/profileServices";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 
   const RecommendedUsers = () => {
+
+    const queryClient = useQueryClient()
 
     const {data : recommendUsers} = useGetRecommendedUsers()
     
@@ -13,6 +16,7 @@ import toast from "react-hot-toast";
       try {
         await toggleFollowRequest(userId)
         toast.success("user followed successfully")
+        await queryClient.invalidateQueries({ queryKey: ["recommendedUsers"] })
       } catch (error) {
         console.error(error)
         toast.error("failed to follow user")

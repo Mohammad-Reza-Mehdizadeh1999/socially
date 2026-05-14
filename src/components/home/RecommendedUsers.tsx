@@ -1,14 +1,22 @@
 import Avatar from "../Ui/Avatar";
 import avatar from "../../assets/avatar.png";
 import { useGetRecommendedUsers } from "../../hooks/useGetRecommendedUsers";
+import { toggleFollowRequest } from "../../services/profileServices";
+import toast from "react-hot-toast";
 
 
   const RecommendedUsers = () => {
 
     const {data : recommendUsers} = useGetRecommendedUsers()
     
-    const handleToggleFollow = (userId: string) => {
-      console.log(userId);
+    const handleToggleFollow = async (userId: string) => {
+      try {
+        await toggleFollowRequest(userId)
+        toast.success("user followed successfully")
+      } catch (error) {
+        console.error(error)
+        toast.error("failed to follow user")
+      }
       
     };
 

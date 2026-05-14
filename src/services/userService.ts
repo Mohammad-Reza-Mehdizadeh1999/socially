@@ -1,4 +1,4 @@
-import type { RecommendedUser } from "../types/recommendedUser";
+import type { RecommendedUser } from "../types/RecommendedUser";
 import api from "./axiosConfig";
 
 

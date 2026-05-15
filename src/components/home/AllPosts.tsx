@@ -2,7 +2,7 @@ import avatar from "../../assets/avatar.png";
 import { useState } from "react";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
 import Avatar from "../Ui/Avatar";
-import {createNewPostRequest} from "../../services/postServices";
+import { createNewPostRequest } from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useGetAllPosts } from "../../hooks/useGetAllPosts";
 import type { Post } from "../../types/allPosts";
@@ -10,20 +10,21 @@ import { getTimeAgo } from "../../utiles/geTimeAgo";
 import { Link } from "react-router";
 import { splitUsername } from "../../utiles/splitUsername";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "../../store/authStore";
 
 const AllPosts = () => {
-
   const [newPostText, setNewPostText] = useState("");
-  const [openCommentPostId, setOpenCommentPostId] = useState<string | null>(null,);
+  const [openCommentPostId, setOpenCommentPostId] = useState<string | null>(null);
   const [commentInput, setcommentInput] = useState<string>();
 
-  
   const { data, isLoading, isError } = useGetAllPosts();
-  
+
   const allPosts = data?.data ?? [];
 
-  const queryClient = useQueryClient()
-  
+  const queryClient = useQueryClient();
+
+  const { user } = useAuthStore();
+
   async function handleCreatePost() {
     const payload = {
       content: newPostText,
@@ -32,13 +33,13 @@ const AllPosts = () => {
       await createNewPostRequest(payload);
       toast.success("post created successfully");
       setNewPostText("");
-      await queryClient.invalidateQueries({ queryKey: ["allPosts"] })
+      await queryClient.invalidateQueries({ queryKey: ["allPosts"] });
     } catch (error) {
       console.error(error);
       toast.error("create new post failed. Please try again");
     }
   }
-  
+
   const handleDeletePost = (postId: string) => {
     console.log(postId);
   };
@@ -87,7 +88,7 @@ const AllPosts = () => {
         </div>
       </div>
 
-      {allPosts.map((post : Post) => {
+      {allPosts.map((post: Post) => {
         const isOpen = openCommentPostId === post.id;
 
         return (
@@ -100,7 +101,10 @@ const AllPosts = () => {
                 <Avatar src={avatar} height={30} width={30}></Avatar>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
-                    <Link to={`/profile/${splitUsername(post.author.email)}`} className="text-base font-medium dark:text-white">
+                    <Link
+                      to={`/profile/${splitUsername(post.author.email)}`}
+                      className="text-base font-medium dark:text-white"
+                    >
                       {post.author.name}
                     </Link>
                     <span className="text-sm leading-5 text-secondery-light dark:text-secondary-dark">
@@ -139,12 +143,14 @@ const AllPosts = () => {
                 </button>
               </div>
 
-              <button
-                onClick={() => handleDeletePost(post.id)}
-                className="absolute right-2 top-2 p-2 hover:bg-border-light dark:hover:bg-border-dark rounded-md cursor-pointer transition-colors"
-              >
-                <Trash2 className="size-4 text-secondery-light dark:text-secondary-dark hover:text-red-500" />
-              </button>
+              {user.id === post.authorId && (
+                <button
+                  onClick={() => handleDeletePost(post.id)}
+                  className="absolute right-2 top-2 p-2 hover:bg-border-light dark:hover:bg-border-dark rounded-md cursor-pointer transition-colors"
+                >
+                  <Trash2 className="size-4 text-secondery-light dark:text-secondary-dark hover:text-red-500" />
+                </button>
+              )}
             </div>
 
             {isOpen && (

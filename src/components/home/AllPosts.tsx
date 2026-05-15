@@ -9,6 +9,7 @@ import type { Post } from "../../types/allPosts";
 import { getTimeAgo } from "../../utiles/geTimeAgo";
 import { Link } from "react-router";
 import { splitUsername } from "../../utiles/splitUsername";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AllPosts = () => {
 
@@ -20,6 +21,8 @@ const AllPosts = () => {
   const { data, isLoading, isError } = useGetAllPosts();
   
   const allPosts = data?.data ?? [];
+
+  const queryClient = useQueryClient()
   
   async function handleCreatePost() {
     const payload = {
@@ -29,6 +32,7 @@ const AllPosts = () => {
       await createNewPostRequest(payload);
       toast.success("post created successfully");
       setNewPostText("");
+      await queryClient.invalidateQueries({ queryKey: ["allPosts"] })
     } catch (error) {
       console.error(error);
       toast.error("create new post failed. Please try again");

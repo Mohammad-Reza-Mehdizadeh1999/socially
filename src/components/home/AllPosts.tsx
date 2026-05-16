@@ -44,6 +44,7 @@ const AllPosts = () => {
     try {
       await deletePostRequest(postId)
       toast.success("post deleted successfully")
+      await queryClient.invalidateQueries({ queryKey: ["allPosts"] });
     } catch (error) {
       console.error(error)
       toast.error("failed to delete post")

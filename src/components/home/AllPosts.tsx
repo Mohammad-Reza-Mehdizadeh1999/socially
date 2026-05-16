@@ -2,7 +2,7 @@ import avatar from "../../assets/avatar.png";
 import { useState } from "react";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
 import Avatar from "../Ui/Avatar";
-import { createNewPostRequest } from "../../services/postServices";
+import { createNewPostRequest, deletePostRequest } from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useGetAllPosts } from "../../hooks/useGetAllPosts";
 import type { Post } from "../../types/allPosts";
@@ -40,8 +40,14 @@ const AllPosts = () => {
     }
   }
 
-  const handleDeletePost = (postId: string) => {
-    console.log(postId);
+  const handleDeletePost = async (postId: string) => {
+    try {
+      await deletePostRequest(postId)
+      toast.success("post deleted successfully")
+    } catch (error) {
+      console.error(error)
+      toast.error("failed to delete post")
+    }
   };
 
   async function handleAddComment(postId: string) {

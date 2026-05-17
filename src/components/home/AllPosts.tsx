@@ -58,8 +58,8 @@ const AllPosts = () => {
 
   async function handleToggleLike(postId: string) {
     try {
-      await toggleFollowRequest(postId);
-      toast.success("post created successfully");
+      const response = await toggleFollowRequest(postId);
+      toast.success(response.data.message);
       await queryClient.invalidateQueries({ queryKey: ["allPosts"] });
     } catch (error) {
       console.error(error);

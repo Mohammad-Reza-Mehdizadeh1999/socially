@@ -11,6 +11,7 @@ import { Link } from "react-router";
 import { splitUsername } from "../../utiles/splitUsername";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store/authStore";
+import { toggleFollowRequest } from "../../services/profileServices";
 
 const AllPosts = () => {
   const [newPostText, setNewPostText] = useState("");
@@ -56,7 +57,13 @@ const AllPosts = () => {
   }
 
   async function handleToggleLike(postId: string) {
-    console.log(postId);
+    try {
+      await toggleFollowRequest(postId);
+      toast.success("post created successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("create new post failed. Please try again");
+    }
   }
 
   if (isLoading) {

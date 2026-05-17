@@ -60,6 +60,7 @@ const AllPosts = () => {
     try {
       await toggleFollowRequest(postId);
       toast.success("post created successfully");
+      await queryClient.invalidateQueries({ queryKey: ["allPosts"] });
     } catch (error) {
       console.error(error);
       toast.error("create new post failed. Please try again");

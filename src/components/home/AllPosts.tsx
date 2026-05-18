@@ -2,7 +2,11 @@ import avatar from "../../assets/avatar.png";
 import { useState } from "react";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
 import Avatar from "../Ui/Avatar";
-import { createNewCommentForPostRequest, createNewPostRequest, deletePostRequest } from "../../services/postServices";
+import {
+  createNewCommentForPostRequest,
+  createNewPostRequest,
+  deletePostRequest,
+} from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useGetAllPosts } from "../../hooks/useGetAllPosts";
 import type { Post } from "../../types/allPosts";
@@ -14,9 +18,11 @@ import { useAuthStore } from "../../store/authStore";
 import { toggleFollowRequest } from "../../services/profileServices";
 
 const AllPosts = () => {
+
   const [newPostText, setNewPostText] = useState("");
   const [openCommentPostId, setOpenCommentPostId] = useState<string | null>(null);
   const [commentInput, setcommentInput] = useState<string>();
+  const [commentingPostId, setCommentingPostId] = useState<string | null>(null);
 
   const { data, isLoading, isError } = useGetAllPosts();
 
@@ -43,12 +49,12 @@ const AllPosts = () => {
 
   const handleDeletePost = async (postId: string) => {
     try {
-      await deletePostRequest(postId)
-      toast.success("post deleted successfully")
+      await deletePostRequest(postId);
+      toast.success("post deleted successfully");
       await queryClient.invalidateQueries({ queryKey: ["allPosts"] });
     } catch (error) {
-      console.error(error)
-      toast.error("failed to delete post")
+      console.error(error);
+      toast.error("failed to delete post");
     }
   };
 
@@ -70,8 +76,9 @@ const AllPosts = () => {
       } else {
         toast.error(response.data.message || "Failed to add comment");
       }
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to add comment");
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to add comment");
     } finally {
       setCommentingPostId(null);
     }
@@ -224,11 +231,20 @@ const AllPosts = () => {
                 <div className="flex justify-end">
                   <button
                     onClick={() => handleAddComment(post.id)}
+                    disabled={
+                      commentingPostId === post.id || !commentInput?.trim()
+                    }
                     type="submit"
                     className="inline-flex items-center justify-center gap-x-2 py-1 px-2 mt-4 rounded-md cursor-pointer transition-colors text-white dark:text-black bg-black dark:bg-white dark:hover:bg-white/80 hover:bg-black/80"
                   >
-                    <Send className="size-4.5" />
-                    <span>comment</span>
+                    {commentingPostId === post.id ? (
+                      <SpinnerMini />
+                    ) : (
+                      <>
+                        <Send className="size-4.5" />
+                        <span>comment</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </div>

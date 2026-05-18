@@ -52,9 +52,30 @@ const AllPosts = () => {
     }
   };
 
-  async function handleAddComment(postId: string) {
-    console.log(postId);
-  }
+  const handleAddComment = async (postId: string) => {
+    if (!commentInput?.trim()) {
+      toast.error("Comment cannot be empty");
+      return;
+    }
+
+    setCommentingPostId(postId);
+    try {
+      const response = await addCommentRequest(postId, {
+        content: commentInput,
+      });
+      if (response.data.success) {
+        toast.success("Comment added");
+        setcommentInput("");
+        setOpenCommentPostId(null);
+      } else {
+        toast.error(response.data.message || "Failed to add comment");
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to add comment");
+    } finally {
+      setCommentingPostId(null);
+    }
+  };
 
   async function handleToggleLike(postId: string) {
     try {

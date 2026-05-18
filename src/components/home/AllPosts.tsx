@@ -60,11 +60,11 @@ const AllPosts = () => {
   };
 
   const handleAddComment = async (postId: string) => {
+
     if (!commentInput?.trim()) {
       toast.error("Comment cannot be empty");
       return;
     }
-
     setCommentingPostId(postId);
     try {
       const response = await createNewCommentForPostRequest(postId, {
@@ -74,6 +74,7 @@ const AllPosts = () => {
         toast.success("Comment added");
         setcommentInput("");
         setOpenCommentPostId(null);
+        await queryClient.invalidateQueries({ queryKey: ["allPosts"] });
       } else {
         toast.error(response.data.message || "Failed to add comment");
       }

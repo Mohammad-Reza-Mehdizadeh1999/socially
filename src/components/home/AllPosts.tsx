@@ -16,6 +16,7 @@ import { splitUsername } from "../../utiles/splitUsername";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "../../store/authStore";
 import { toggleFollowRequest } from "../../services/profileServices";
+import { SpinnerMini } from "../Ui/Spinner";
 
 const AllPosts = () => {
 

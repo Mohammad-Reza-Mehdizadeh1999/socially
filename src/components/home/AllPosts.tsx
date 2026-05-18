@@ -2,7 +2,7 @@ import avatar from "../../assets/avatar.png";
 import { useState } from "react";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
 import Avatar from "../Ui/Avatar";
-import { createNewPostRequest, deletePostRequest } from "../../services/postServices";
+import { createNewCommentForPostRequest, createNewPostRequest, deletePostRequest } from "../../services/postServices";
 import toast from "react-hot-toast";
 import { useGetAllPosts } from "../../hooks/useGetAllPosts";
 import type { Post } from "../../types/allPosts";
@@ -60,7 +60,7 @@ const AllPosts = () => {
 
     setCommentingPostId(postId);
     try {
-      const response = await addCommentRequest(postId, {
+      const response = await createNewCommentForPostRequest(postId, {
         content: commentInput,
       });
       if (response.data.success) {

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllNotificationsRequest } from "../services/notificationService";
 import type { Notification } from "../Types/notifications";
+import { getAllNotificationsRequest } from "../services/notificationService";
 
 export const useGetAllNotifications = () => {
   return useQuery<Notification[]>({

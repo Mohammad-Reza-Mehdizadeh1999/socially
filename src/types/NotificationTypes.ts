@@ -14,7 +14,7 @@ export interface Comment {
   content: string;
 }
 
-export type NotificationType = 'FOLLOW' | 'LIKE' | 'COMMENT';
+export type NotificationType = "LIKE" | "COMMENT" | "FOLLOW";
 
 export interface Notification {
   id: string;
@@ -25,7 +25,16 @@ export interface Notification {
   type: NotificationType;
   read: boolean;
   createdAt: string;
-  creator: User;
-  post: Post | null;
-  comment: Comment | null;
+  creator: {
+    id: string;
+    name: string;
+    image: string | null;
+    email: string;
+  };
+  post: {
+    content: string;
+  } | null;
+  comment: {
+    content: string;
+  } | null;
 }

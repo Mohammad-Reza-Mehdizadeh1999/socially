@@ -4,10 +4,10 @@ import avatar from "../assets/avatar.png";
 import { useGetAllNotifications } from "../hooks/useGetAllNotification";
 import { useMarkOneAsRead, useMarkAllAsRead } from "../hooks/useMarkNotificationsRead";
 import type { Notification, NotificationType } from "../Types/notifications";
-import { getRelativeTime } from "../utils/getRelativeTime";
 import toast from "react-hot-toast";
 import NotFoundPage from "./NotFoundPage";
 import { useAuthStore } from "../store/authStore";
+import { getTimeAgo } from "../utiles/geTimeAgo";
 
 const NotificationsPage = () => {
 
@@ -191,7 +191,7 @@ const NotificationsPage = () => {
                   </span>
                 )}
                 <span className="text-sm leading-5 text-secondery-light dark:text-secondary-dark">
-                  {getRelativeTime(notif.createdAt)}
+                  {getTimeAgo(notif.createdAt)}
                 </span>
               </div>
               {notif.read || (

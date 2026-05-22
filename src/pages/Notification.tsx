@@ -7,6 +7,7 @@ import NotFoundPage from "./NotFoundPage";
 import { useAuthStore } from "../store/authStore";
 import { getTimeAgo } from "../utiles/geTimeAgo";
 import type { Notification, NotificationType } from "../types/NotificationTypes";
+import Button from "../components/Ui/Button";
 
 const NotificationsPage = () => {
 

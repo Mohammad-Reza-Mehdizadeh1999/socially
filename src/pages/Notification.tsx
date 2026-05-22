@@ -1,4 +1,3 @@
-import Button from "../components/Ui/Button";
 import Avatar from "../components/Ui/Avatar";
 import avatar from "../assets/avatar.png";
 import { useGetAllNotifications } from "../hooks/useGetAllNotification";

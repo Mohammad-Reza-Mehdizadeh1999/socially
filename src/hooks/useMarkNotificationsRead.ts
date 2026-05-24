@@ -14,3 +14,13 @@ export const useMarkOneAsRead = () => {
   });
 };
 
+export const useMarkAllAsRead = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (ids: string[]) => markAllNotificationsRead(ids),
+    onSuccess: () => {
+      toast.success("Notifications marked as read successfully")
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    },
+  });
+};

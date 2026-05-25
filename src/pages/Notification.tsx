@@ -1,27 +1,16 @@
 import Avatar from "../components/Ui/Avatar";
 import avatar from "../assets/avatar.png";
 import { useGetAllNotifications } from "../hooks/useGetAllNotification";
-import {
-  useMarkOneAsRead,
-  useMarkAllAsRead,
-} from "../hooks/useMarkNotificationsRead";
+import {useMarkOneAsRead,useMarkAllAsRead} from "../hooks/useMarkNotificationsRead";
 import toast from "react-hot-toast";
 import NotFoundPage from "./NotFoundPage";
 import { useAuthStore } from "../store/authStore";
 import { getTimeAgo } from "../utiles/geTimeAgo";
-import type {
-  Notification,
-  NotificationType,
-} from "../types/NotificationTypes";
+import type {Notification,NotificationType} from "../types/NotificationTypes";
 import Button from "../components/Ui/Button";
 
 const NotificationsPage = () => {
-  const {
-    data: notificationsData,
-    isLoading,
-    isError,
-    error,
-  } = useGetAllNotifications();
+  const {data: notificationsData, isLoading, isError, error} = useGetAllNotifications();
   const { isAuthenticated } = useAuthStore();
 
   const markOneMutation = useMarkOneAsRead();

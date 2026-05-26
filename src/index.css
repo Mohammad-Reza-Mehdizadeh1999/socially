@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+
 @font-face {
   font-family: "Yekan";
   src: url("../src/assets/fonts/IRANYekanX-Regular.ttf") format("truetype");

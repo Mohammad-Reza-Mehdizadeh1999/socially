@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+@theme {
+  --color-primary-light: #171717;
+  --color-secondary-dark: #a3a3a3;
+  --color-secondery-light: #737373;
+  --color-border-light: #e5e5e5;
+  --color-border-dark: #262626;
+}
 
 @font-face {
   font-family: "Yekan";

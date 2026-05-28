@@ -2,10 +2,14 @@ import { Outlet, useLocation } from "react-router";
 import SideProfile from "../components/SideProfile";
 import Header from "../components/Header";
 import { useSessionQuery } from "../hooks/useSessionQuery";
+import { useAuthStore } from "../store/authStore";
+import SideSingIn from "../components/SideSingIn";
 
 const RootLayout = () => {
   
   const { isLoading } = useSessionQuery();
+
+  const { isAuthenticated } = useAuthStore();
 
   const location = useLocation();
 
@@ -21,7 +25,7 @@ const RootLayout = () => {
         {/* Left Side */}
         {!location.pathname.startsWith("/profile") && (
           <aside className="w-1/3 mt-5">
-            <SideProfile />
+            { isAuthenticated ? <SideProfile /> : <SideSingIn />}
           </aside>
         )}
 

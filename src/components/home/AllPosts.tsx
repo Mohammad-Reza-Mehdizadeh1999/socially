@@ -56,6 +56,12 @@ const AllPosts = () => {
   }
 
   const handleDeletePost = async (postId: string) => {
+
+    if (!isAuthenticated) {
+      toast.error("You must be logged in to delete a post");
+      return;
+    }
+
     try {
       await deletePostRequest(postId);
       toast.success("post deleted successfully");

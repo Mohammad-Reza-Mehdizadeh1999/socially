@@ -39,6 +39,11 @@ const AllPosts = () => {
       return;
     }
 
+    if (!isAuthenticated) {
+      toast.error("You must be logged in to create a post");
+      return;
+    }
+
     try {
       await createNewPostRequest(payload);
       toast.success("post created successfully");

@@ -27,12 +27,18 @@ const AllPosts = () => {
 
   const queryClient = useQueryClient();
 
-  const { user } = useAuthStore();
+  const { user , isAuthenticated } = useAuthStore();
 
   async function handleCreatePost() {
     const payload = {
       content: newPostText,
     };
+
+    if (!payload.content) {
+      toast.error("Post cannot be empty");
+      return;
+    }
+
     try {
       await createNewPostRequest(payload);
       toast.success("post created successfully");

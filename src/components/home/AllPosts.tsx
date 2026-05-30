@@ -78,6 +78,12 @@ const AllPosts = () => {
       toast.error("Comment cannot be empty");
       return;
     }
+
+    if (!isAuthenticated) {
+      toast.error("You must be logged in to add a comment");
+      return;
+    }
+
     setCommentingPostId(postId);
     try {
       const response = await createNewCommentForPostRequest(postId, {

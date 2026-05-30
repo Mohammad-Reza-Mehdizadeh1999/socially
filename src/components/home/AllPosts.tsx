@@ -106,6 +106,12 @@ const AllPosts = () => {
   };
 
   async function handleToggleLike(postId: string) {
+
+    if (!isAuthenticated) {
+      toast.error("You must be logged in to like a post");
+      return;
+    }
+
     try {
       const response = await toggleFollowRequest(postId);
       toast.success(response.data.message);

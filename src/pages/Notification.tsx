@@ -8,6 +8,7 @@ import { useAuthStore } from "../store/authStore";
 import { getTimeAgo } from "../utiles/geTimeAgo";
 import type {Notification,NotificationType} from "../types/NotificationTypes";
 import Button from "../components/Ui/Button";
+import { Heart } from "lucide-react";
 
 const NotificationsPage = () => {
   const {data: notificationsData, isLoading, isError, error} = useGetAllNotifications();
@@ -41,20 +42,7 @@ const NotificationsPage = () => {
     switch (type) {
       case "LIKE":
         return (
-          <svg
-            className="size-4"
-            viewBox="0 0 15 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 8.00001C12.9933 7.02667 14 5.86001 14 4.33334C14 3.36088 13.6137 2.42825 12.9261 1.74061C12.2384 1.05298 11.3058 0.666672 10.3333 0.666672C9.16 0.666672 8.33333 1.00001 7.33333 2.00001C6.33333 1.00001 5.50667 0.666672 4.33333 0.666672C3.36087 0.666672 2.42824 1.05298 1.74061 1.74061C1.05298 2.42825 0.666668 3.36088 0.666668 4.33334C0.666668 5.86667 1.66667 7.03334 2.66667 8.00001L7.33333 12.6667L12 8.00001Z"
-              stroke="#EF4444"
-              stroke-width="1.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <Heart />
         );
       case "COMMENT":
         return (

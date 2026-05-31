@@ -8,7 +8,7 @@ import { useAuthStore } from "../store/authStore";
 import { getTimeAgo } from "../utiles/geTimeAgo";
 import type {Notification,NotificationType} from "../types/NotificationTypes";
 import Button from "../components/Ui/Button";
-import { Heart } from "lucide-react";
+import { Heart, MessageCircle } from "lucide-react";
 
 const NotificationsPage = () => {
   const {data: notificationsData, isLoading, isError, error} = useGetAllNotifications();
@@ -46,20 +46,7 @@ const NotificationsPage = () => {
         );
       case "COMMENT":
         return (
-          <svg
-            className="size-4"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4.60002 12.0052C5.87241 12.6579 7.33608 12.8347 8.72728 12.5038C10.1185 12.1728 11.3457 11.3558 12.1879 10.2C13.03 9.04426 13.4316 7.62572 13.3204 6.20002C13.2092 4.77432 12.5924 3.43522 11.5812 2.42404C10.57 1.41286 9.23095 0.796079 7.80525 0.684856C6.37955 0.573632 4.961 0.975276 3.80523 1.81741C2.64947 2.65954 1.83248 3.88678 1.5015 5.27799C1.17052 6.66919 1.34732 8.13286 2.00002 9.40525L0.666687 13.3386L4.60002 12.0052Z"
-              stroke="#3B82F6"
-              stroke-width="1.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <MessageCircle />
         );
       case "FOLLOW":
         return (

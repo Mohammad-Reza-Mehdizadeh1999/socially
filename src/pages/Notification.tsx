@@ -8,7 +8,7 @@ import { useAuthStore } from "../store/authStore";
 import { getTimeAgo } from "../utiles/geTimeAgo";
 import type {Notification,NotificationType} from "../types/NotificationTypes";
 import Button from "../components/Ui/Button";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, MessageCircle, UserRoundPlus } from "lucide-react";
 
 const NotificationsPage = () => {
   const {data: notificationsData, isLoading, isError, error} = useGetAllNotifications();
@@ -50,27 +50,7 @@ const NotificationsPage = () => {
         );
       case "FOLLOW":
         return (
-          <svg
-            className="size-4 text-green-500"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12.6666 14V12.6667C12.6666 11.9594 12.3857 11.2811 11.8856 10.781C11.3855 10.281 10.7072 10 9.99998 10H5.99998C5.29274 10 4.61446 10.281 4.11436 10.781C3.61426 11.2811 3.33331 11.9594 3.33331 12.6667V14"
-              stroke="currentColor"
-              stroke-width="1.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M7.99998 7.33333C9.47274 7.33333 10.6666 6.13943 10.6666 4.66667C10.6666 3.19391 9.47274 2 7.99998 2C6.52722 2 5.33331 3.19391 5.33331 4.66667C5.33331 6.13943 6.52722 7.33333 7.99998 7.33333Z"
-              stroke="currentColor"
-              stroke-width="1.33333"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <UserRoundPlus />
         );
     }
   };

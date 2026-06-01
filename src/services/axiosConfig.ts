@@ -5,7 +5,7 @@ export interface ApiRequestConfig extends InternalAxiosRequestConfig {
 }
 
 const api: AxiosInstance = axios.create({
-  baseURL: 'https://qbc11-front-next.liara.run/api',
+  baseURL: "https://socially-nextjs-six.vercel.app/api",
   withCredentials: true, 
   headers: {
     'Content-Type': 'application/json',

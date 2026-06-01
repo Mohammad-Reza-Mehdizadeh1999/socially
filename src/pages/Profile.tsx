@@ -1,11 +1,16 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import ProfileCard from "../components/profile/ProfileCard";
 import ProfileDetails from "../components/profile/ProfileDetails";
 import { useGetUserPosts } from "../hooks/useGetUserPosts";
 import { useGetUserLikes } from "../hooks/useGetUserLikes";
 import { useGetProfileDataByUsername } from "../hooks/useGetProfileDataByUsername";
+import { useAuthStore } from "../store/authStore";
 
 export default function ProfilePage() {
+
+  const { isAuthenticated } = useAuthStore()
+
+  const navigate = useNavigate()
 
   const {userName} = useParams()
 
@@ -18,6 +23,10 @@ export default function ProfilePage() {
 
   if (isLoading) return <div>Loading...</div>;
   if (!profileData) return <div>پروفایلی یافت نشد</div>;
+
+  if(!isAuthenticated){
+    navigate("/login")
+  }
 
   return (
     <div className="w-full min-h-screen mx-auto pt-5 dark:bg-black">

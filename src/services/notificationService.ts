@@ -9,3 +9,7 @@ export const markOneNotificationRead = (ids: string) => {
   const idToTransfer = { ids : [ids] }  
   return api.patch(`/notifications` , idToTransfer);
 };
+
+export const markAllNotificationsRead = (ids: string[]) => {
+  return api.patch("/notifications", { ids });
+};

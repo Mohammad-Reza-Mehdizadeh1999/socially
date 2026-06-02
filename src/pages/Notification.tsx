@@ -3,16 +3,18 @@ import avatar from "../assets/avatar.png";
 import { useGetAllNotifications } from "../hooks/useGetAllNotification";
 import {useMarkOneAsRead,useMarkAllAsRead} from "../hooks/useMarkNotificationsRead";
 import toast from "react-hot-toast";
-import NotFoundPage from "./NotFoundPage";
 import { useAuthStore } from "../store/authStore";
 import { getTimeAgo } from "../utiles/geTimeAgo";
 import type {Notification,NotificationType} from "../types/NotificationTypes";
 import Button from "../components/Ui/Button";
 import { Heart, MessageCircle, UserRoundPlus } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const NotificationsPage = () => {
   const {data: notificationsData, isLoading, isError, error} = useGetAllNotifications();
   const { isAuthenticated } = useAuthStore();
+  const navigate = useNavigate()
+
 
   const markOneMutation = useMarkOneAsRead();
   const markAllMutation = useMarkAllAsRead();
@@ -21,8 +23,8 @@ const NotificationsPage = () => {
     ? notificationsData.filter((notif) => !notif.read).length
     : 0;
 
-  if (!isAuthenticated) {
-    return <NotFoundPage />;
+  if(!isAuthenticated){
+    navigate("/login")
   }
 
   const getNotificationText = (notification: Notification) => {

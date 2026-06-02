@@ -165,10 +165,10 @@ const LoginPage: React.FC = () => {
               </div>
 
               {/* Right Side - Decorative */}
-              <div className="hidden md:block bg-gradient-to-br from-blue-500/10 to-purple-500/10 dark:from-blue-600/20 dark:to-purple-600/20 border-l border-gray-200 dark:border-gray-800 transition-colors">
+              <div className="hidden md:block bg-linear-to-br from-blue-500/10 to-purple-500/10 dark:from-blue-600/20 dark:to-purple-600/20 border-l border-gray-200 dark:border-gray-800 transition-colors">
                 <div className="h-full flex items-center justify-center p-8 lg:p-12">
                   <div className="text-center">
-                    <div className="w-24 h-24 lg:w-32 lg:h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <div className="w-24 h-24 lg:w-32 lg:h-32 mx-auto mb-6 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                       <LogIn className="w-12 h-12 lg:w-16 lg:h-16 text-white" />
                     </div>
                     <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">

@@ -254,10 +254,10 @@ const RegisterPage: React.FC = () => {
               </div>
 
               {/* Right Side */}
-              <div className="hidden md:block bg-gradient-to-br from-blue-600/10 to-purple-600/10 dark:from-blue-600/20 dark:to-purple-600/20 border-l border-gray-200 dark:border-gray-800">
+              <div className="hidden md:block bg-linear-to-br from-blue-600/10 to-purple-600/10 dark:from-blue-600/20 dark:to-purple-600/20 border-l border-gray-200 dark:border-gray-800">
                 <div className="h-full flex items-center justify-center p-12">
                   <div className="text-center">
-                    <div className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <div className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                       <UserPlus className="w-12 h-12 md:w-16 md:h-16 text-white" />
                     </div>
 

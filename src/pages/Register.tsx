@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Mail, Lock, User, UserPlus } from "lucide-react";
+import { Mail, Lock, User, UserPlus, EyeOff, Eye } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { registerRequest } from "../services/authService";
 import Header from "../components/Header";
@@ -14,6 +14,8 @@ interface RegisterFormInputs {
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -157,7 +159,7 @@ const RegisterPage: React.FC = () => {
                         </div>
                         <input
                           id="password"
-                          type="password"
+                          type={showPassword ? "text" : "password"}
                           {...register("password", {
                             required: "Password is required",
                             minLength: {
@@ -177,6 +179,13 @@ const RegisterPage: React.FC = () => {
                           }`}
                           placeholder="••••••••"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                        >
+                          {showPassword ? <EyeOff /> : <Eye />}
+                        </button>
                       </div>
                     </div>
 

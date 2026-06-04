@@ -8,6 +8,7 @@ import { getTimeAgo } from "../utiles/geTimeAgo";
 import type {Notification} from "../types/NotificationTypes";
 import Button from "../components/Ui/Button";
 import { useNavigate } from "react-router";
+import { renderIcon } from "../utiles/renderIcon";
 
 const NotificationsPage = () => {
   const {data: notificationsData, isLoading, isError, error} = useGetAllNotifications();

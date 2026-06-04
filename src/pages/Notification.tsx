@@ -5,9 +5,8 @@ import {useMarkOneAsRead,useMarkAllAsRead} from "../hooks/useMarkNotificationsRe
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 import { getTimeAgo } from "../utiles/geTimeAgo";
-import type {Notification,NotificationType} from "../types/NotificationTypes";
+import type {Notification} from "../types/NotificationTypes";
 import Button from "../components/Ui/Button";
-import { Heart, MessageCircle, UserRoundPlus } from "lucide-react";
 import { useNavigate } from "react-router";
 
 const NotificationsPage = () => {
@@ -40,22 +39,7 @@ const NotificationsPage = () => {
     }
   };
 
-  const renderIcon = (type: NotificationType) => {
-    switch (type) {
-      case "LIKE":
-        return (
-          <Heart />
-        );
-      case "COMMENT":
-        return (
-          <MessageCircle />
-        );
-      case "FOLLOW":
-        return (
-          <UserRoundPlus />
-        );
-    }
-  };
+
 
   const handleMarkAllRead = () => {
     const notReadNotifIds: string[] = [];

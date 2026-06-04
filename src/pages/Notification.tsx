@@ -96,14 +96,8 @@ const NotificationsPage = () => {
   return (
     <section className="px-4 sm:px-5">
       <div
-        className="
-      mt-6 flex flex-col mx-auto 
-      max-w-full sm:max-w-154 lg:max-w-190 xl:max-w-244 
-      h-140 
-      border border-border-light dark:border-border-dark 
-      bg-white dark:bg-primary-light 
-      rounded-xl
-    "
+        className="mt-6 flex flex-col mx-auto max-w-full sm:max-w-154 lg:max-w-190 xl:max-w-244 
+                   h-140 border border-border-light dark:border-border-dark bg-white dark:bg-primary-light rounded-xl"
       >
         <div className="flex justify-between items-center p-4 sm:p-6 sticky top-0 bg-white dark:bg-primary-light z-10">
           <h4 className="text-base font-bold dark:text-white">Notifications</h4>

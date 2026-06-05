@@ -5,10 +5,10 @@ import {useMarkOneAsRead,useMarkAllAsRead} from "../hooks/useMarkNotificationsRe
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 import { getTimeAgo } from "../utiles/geTimeAgo";
-import type {Notification} from "../types/NotificationTypes";
 import Button from "../components/Ui/Button";
 import { useNavigate } from "react-router";
 import { renderIcon } from "../utiles/renderIcon";
+import { getNotificationText } from "../utiles/getNotificationText";
 
 const NotificationsPage = () => {
   const {data: notificationsData, isLoading, isError, error} = useGetAllNotifications();
@@ -26,21 +26,6 @@ const NotificationsPage = () => {
   if(!isAuthenticated){
     navigate("/login")
   }
-
-  const getNotificationText = (notification: Notification) => {
-    switch (notification.type) {
-      case "LIKE":
-        return "liked your post";
-      case "COMMENT":
-        return "commented on your post";
-      case "FOLLOW":
-        return "started following you";
-      default:
-        return "";
-    }
-  };
-
-
 
   const handleMarkAllRead = () => {
     const notReadNotifIds: string[] = [];

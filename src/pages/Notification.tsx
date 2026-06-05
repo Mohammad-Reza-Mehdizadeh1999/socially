@@ -150,12 +150,7 @@ const NotificationsPage = () => {
 
                 {notif.comment && (
                   <span
-                    className="
-                  dark:text-white 
-                  w-full sm:w-1/2 
-                  border my-2 p-3 rounded-lg 
-                  border-gray-300 dark:border-gray-600
-                "
+                    className="dark:text-white w-full sm:w-1/2 border my-2 p-3 rounded-lgborder-gray-300 dark:border-gray-600"
                   >
                     {notif.comment.content}
                   </span>

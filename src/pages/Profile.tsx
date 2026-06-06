@@ -14,7 +14,7 @@ export default function ProfilePage() {
 
   const {userName} = useParams()
 
-  const {data: profileData , isLoading } = useGetProfileDataByUsername(userName!)
+  const {data: profileData , isLoading , isError } = useGetProfileDataByUsername(userName!)
 
   const {data: profilePostsData } = useGetUserPosts(profileData?.id)
 
@@ -22,6 +22,7 @@ export default function ProfilePage() {
   
 
   if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div className="text-red-500">fail to load user profile</div>;
   if (!profileData) return <div>پروفایلی یافت نشد</div>;
 
   if(!isAuthenticated){

@@ -16,13 +16,14 @@ export default function ProfilePage() {
 
   const {data: profileData , isLoading , isError } = useGetProfileDataByUsername(userName!)
 
-  const {data: profilePostsData } = useGetUserPosts(profileData?.id)
+  const {data: profilePostsData , isError : isErrorUserPosts } = useGetUserPosts(profileData?.id)
 
   const {data: profileLikesData } = useGetUserLikes(profileData?.id)
   
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div className="text-red-500">fail to load user profile</div>;
+  if (isErrorUserPosts) return <div className="text-red-500">fail to load user posts</div>;
   if (!profileData) return <div>پروفایلی یافت نشد</div>;
 
   if(!isAuthenticated){

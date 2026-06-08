@@ -11,7 +11,7 @@ import { renderIcon } from "../utiles/renderIcon";
 import { getNotificationText } from "../utiles/getNotificationText";
 
 const NotificationsPage = () => {
-  const {data: notificationsData, isLoading, isError, error} = useGetAllNotifications();
+  const {data: notificationsData, isLoading, isError} = useGetAllNotifications();
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate()
 

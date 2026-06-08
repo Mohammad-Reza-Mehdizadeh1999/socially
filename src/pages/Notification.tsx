@@ -57,7 +57,7 @@ const NotificationsPage = () => {
     return (
       <section className="px-5">
         <div className="mt-6 flex flex-col mx-auto max-w-154 lg:max-w-190 xl:max-w-244 h-128 border border-border-light dark:border-border-dark dark:bg-primary-light rounded-xl items-center justify-center">
-          <p className="text-red-500">Error: {error.message}</p>
+          <p className="text-red-500">fail to fetch notifications</p>
         </div>
       </section>
     );

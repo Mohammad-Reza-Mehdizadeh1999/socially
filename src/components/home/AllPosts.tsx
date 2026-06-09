@@ -128,7 +128,7 @@ const AllPosts = () => {
 
   if (isError) {
     return (
-      <div className="text-center mt-10 text-red-500">Something went wrong</div>
+      <div className="text-center mt-10 text-red-500">fail to fetch posts...</div>
     );
   }
 

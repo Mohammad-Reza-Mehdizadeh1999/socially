@@ -13,7 +13,11 @@ import { useAuthStore } from "../../store/authStore";
 
     const {user} = useAuthStore()
 
-    const {data : recommendUsers} = useGetRecommendedUsers()
+    const {data : recommendUsers , isLoading} = useGetRecommendedUsers()
+
+    // if(isLoading){
+    //   return <div>Loading recommended users....</div>
+    // }
     
     const handleToggleFollow = async (userId: string) => {
       try {

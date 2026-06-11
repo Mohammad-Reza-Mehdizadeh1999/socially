@@ -13,7 +13,7 @@ import { useAuthStore } from "../../store/authStore";
 
     const {user} = useAuthStore()
 
-    const {data : recommendUsers , isLoading} = useGetRecommendedUsers()
+    const {data : recommendUsers , isLoading , isError} = useGetRecommendedUsers()
 
     if(isLoading){
       return <div>Loading recommended users....</div>

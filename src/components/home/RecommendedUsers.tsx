@@ -19,6 +19,10 @@ import { useAuthStore } from "../../store/authStore";
       return <div>Loading recommended users....</div>
     }
     
+    if(isError){
+      return <div>Fail to fetch recommended users....</div>
+    }
+
     const handleToggleFollow = async (userId: string) => {
       try {
         await toggleFollowRequest(userId)

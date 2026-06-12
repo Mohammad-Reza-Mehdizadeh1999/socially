@@ -12,7 +12,7 @@ interface UserProfileFollowersModalProps {
 function UserProfileFollowersModal({ isOpen, onClose, followers } : UserProfileFollowersModalProps) {
 
     
-  const { data, isLoading } = useGetFollowers({ followers, enabled: isOpen });
+  const { data, isLoading , isError } = useGetFollowers({ followers, enabled: isOpen });
 
   if (!isOpen) return null;
     
@@ -32,6 +32,10 @@ function UserProfileFollowersModal({ isOpen, onClose, followers } : UserProfileF
 
         {!isLoading && data?.length === 0 && (
           <p className="text-center text-gray-400">No followers</p>
+        )}
+
+        {isError && (
+          <p className="text-center text-gray-400">Fail to fetch followers....</p>
         )}
 
         <div className="flex flex-col gap-3 ">

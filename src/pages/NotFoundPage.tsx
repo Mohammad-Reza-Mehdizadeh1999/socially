@@ -1,4 +1,5 @@
 import { Home, SearchX } from "lucide-react";
+import { Link } from "react-router";
 
 const NotFoundPage = () => {
   return (

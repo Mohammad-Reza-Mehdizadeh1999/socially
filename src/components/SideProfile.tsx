@@ -8,9 +8,7 @@ const SideProfile: React.FC = () => {
   const { user } = useAuthStore();
   
   const {data: profileData } = useGetProfileData(user?.id)
-  
-  console.log("assasasasasas",profileData);
-  
+    
   return (
     <div className="bg-gray-200 dark:bg-black rounded-2xl p-6 border border-gray-800">
       {/* Avatar */}

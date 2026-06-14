@@ -3,13 +3,13 @@ import { Link } from "react-router";
 
 const NotFoundPage = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black dark:to-gray-950 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-gray-50 to-gray-100 dark:from-black dark:to-gray-950 px-4">
       <div className="max-w-md w-full text-center">
         <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-900">
           <SearchX size={48} />
         </div>
 
-        <h1 className="text-7xl font-extrabold tracking-tight bg-gradient-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-500 bg-clip-text text-transparent">
+        <h1 className="text-7xl font-extrabold tracking-tight bg-linear-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-500 bg-clip-text text-transparent">
           404
         </h1>
 

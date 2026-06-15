@@ -29,7 +29,7 @@ const SideProfile: React.FC = () => {
 
       {/* Name & Username */}
       <div className="text-center mb-6 px-2">
-        <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white my-1 break-words">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white my-1 wrap-break-word">
           {user?.name}
         </h2>
 

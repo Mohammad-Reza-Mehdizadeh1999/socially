@@ -1,14 +1,13 @@
-import React from 'react';
-import { MapPin, Link as LinkIcon } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
-import { useGetProfileData } from '../hooks/useGetProfileData';
+import React from "react";
+import { MapPin, Link as LinkIcon } from "lucide-react";
+import { useAuthStore } from "../store/authStore";
+import { useGetProfileData } from "../hooks/useGetProfileData";
 
 const SideProfile: React.FC = () => {
-
   const { user } = useAuthStore();
-  
-  const {data: profileData } = useGetProfileData(user?.id)
-    
+
+  const { data: profileData } = useGetProfileData(user?.id);
+
   return (
     <div className="bg-gray-200 dark:bg-black rounded-2xl p-6 border border-gray-800">
       {/* Avatar */}
@@ -29,9 +28,13 @@ const SideProfile: React.FC = () => {
       </div>
 
       {/* Name & Username */}
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-bold text-white my-1">{user?.name}</h2>
-        <p className="text-gray-400 text-sm">{user?.email}</p>
+      <div className="text-center mb-6 px-2">
+        <h2 className="text-lg sm:text-xl font-bold text-white my-1 break-words">
+          {user?.name}
+        </h2>
+        <p className="text-gray-400 text-xs sm:text-sm break-all">
+          {user?.email}
+        </p>
       </div>
 
       {/* Divider */}
@@ -39,13 +42,18 @@ const SideProfile: React.FC = () => {
 
       {/* Stats */}
       <div className="flex justify-around mb-6">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-white mb-1">{profileData?._count.followings}</div>
-          <div className="text-gray-400 text-sm">Followings</div>
+        <div className="text-center min-w-0">
+          <div className="text-xl sm:text-2xl font-bold text-white mb-1">
+            {profileData?._count.followings}
+          </div>
+          <div className="text-gray-400 text-xs sm:text-sm">Followings</div>
         </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-white mb-1">{profileData?._count.followers}</div>
-          <div className="text-gray-400 text-sm">Followers</div>
+
+        <div className="text-center min-w-0">
+          <div className="text-xl sm:text-2xl font-bold text-white mb-1">
+            {profileData?._count.followers}
+          </div>
+          <div className="text-gray-400 text-xs sm:text-sm">Followers</div>
         </div>
       </div>
 
@@ -55,15 +63,19 @@ const SideProfile: React.FC = () => {
       {/* Location & Website */}
       <div className="space-y-3">
         {/* Location */}
-        <div className="flex items-center space-x-2 text-gray-400">
-          <MapPin size={18} />
-          <span className="text-sm">{profileData?.location ? profileData?.location : "No Location"}</span>
+        <div className="flex items-center gap-2 text-gray-400 min-w-0">
+          <MapPin size={18} className="shrink-0" />
+          <span className="text-sm truncate">
+            {profileData?.location || "No Location"}
+          </span>
         </div>
 
         {/* Website */}
-        <div className="flex items-center space-x-2 text-gray-400">
-          <LinkIcon size={18} />
-          <span className="text-sm">{profileData?.website ? profileData?.website : "No Website"}</span>
+        <div className="flex items-center gap-2 text-gray-400 min-w-0">
+          <LinkIcon size={18} className="shrink-0" />
+          <span className="text-sm truncate">
+            {profileData?.website || "No Website"}
+          </span>
         </div>
       </div>
     </div>

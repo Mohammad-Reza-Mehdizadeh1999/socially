@@ -1,16 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllNotificationsRequest } from "../services/notificationService";
-import type { Notification } from "../types/NotificationTypes";
+import { getAllNotifications } from "../services/notificationServices";
+import { useAuthStore } from "../store/authStore";
 
 export const useGetAllNotifications = () => {
-  return useQuery<Notification[]>({
-    queryKey: ["notifications"],
-    queryFn: async () => {
-      const res = await getAllNotificationsRequest();
-      if (!res.data.success) {
-        throw new Error("Failed to fetch notifications");
-      }
-      return res.data.data;
-    },
+  const { user } = useAuthStore();
+
+  const query = useQuery({
+    queryKey: ["allNotifications", user?.id],
+    queryFn: getAllNotifications,
+    retry: false,
+    refetchOnWindowFocus: "always",
+    staleTime: 1000 * 60 * 5,
+    refetchOnMount: "always",
   });
+
+  return query;
 };

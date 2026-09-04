@@ -1,156 +1,142 @@
-import React, { useEffect } from "react";
-import { Home, Bell, User, LogOut, Moon, Sun, X } from "lucide-react";
-import { Link, useLocation } from "react-router";
+import { Bell, BookPlus, House, LogIn, LogOut, UsersRound, X } from "lucide-react";
+import { logoutRequest } from "../services/authServices";
+import { NavLink, useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../store/authStore";
 
-interface MobileSidebarProps {
+interface sidebarProps {
   isOpen: boolean;
-  onClose: () => void;
-  isDark: boolean;
-  toggleTheme: () => void;
-  onLogout: () => void;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
-interface NavLink {
-  path: string;
-  icon: React.ComponentType<{ size: number }>;
-  label: string;
-}
+export default function MobileSidebar(props: sidebarProps) {
+  const { isOpen, setIsOpen } = props;
 
-const MobileSidebar: React.FC<MobileSidebarProps> = ({
-  isOpen,
-  onClose,
-  isDark,
-  toggleTheme,
-  onLogout,
-}) => {
-  const location = useLocation();
+  const { isAuthenticated } = useAuthStore();
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
+  const handleToggleSidebar = () => {
+    setIsOpen(!isOpen);
   };
 
-  const navLinks: NavLink[] = [
-    { path: "/", icon: Home, label: "Home" },
-    { path: "/notifications", icon: Bell, label: "Notifications" },
-    { path: "/profile", icon: User, label: "Profile" },
-  ];
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
+  const { logout: logoutStore } = useAuthStore();
 
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
+  const handleLogout = async () => {
+    try {
+      await logoutRequest();
+      logoutStore();
+      queryClient.removeQueries({ queryKey: ["session"] });
+      navigate("/login");
+      toast.success("Logout successfully");
+    } catch (err) {
+      toast.error("logout failed...");
+      console.log(err);
     }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
+  };
 
   return (
-    <div className="fixed inset-0 z-50 md:hidden">
-      {/* Backdrop */}
+    <>
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Slide-in Menu from Right */}
-      <div
-        className={`absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white dark:bg-black 
-                  border-l border-gray-200 dark:border-gray-800 shadow-2xl 
-                  transform transition-transform duration-300 ease-out
-                  ${isOpen ? "translate-x-0" : "translate-x-full"}`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobile navigation menu"
+        className={`h-screen md:hidden z-100 fixed top-0 bottom-0 right-0 w-2xs bg-white dark:bg-[#0A0A0A] p-5 duration-200 ease-in  ${isOpen ? "translate-x-0" : "translate-x-full"} `}
       >
-        {/* Menu Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Menu
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900 
-                     text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 
-                     transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-label="Close menu"
-          >
-            <X size={20} />
-          </button>
+        <div className="flex items-center justify-between mb-5">
+          <p className="font-semibold text-[16px] dark:text-white">Menu</p>
+
+          <X
+            size={16}
+            className="dark:text-white cursor-pointer"
+            onClick={handleToggleSidebar}
+          />
         </div>
 
-        {/* Menu Content */}
-        <nav className="p-4 space-y-2">
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg 
-                     bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300
-                     hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-200
-                     focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
-            <span className="font-medium">
-              {isDark ? "Light Mode" : "Dark Mode"}
-            </span>
-          </button>
-
-          {/* Navigation Links */}
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={onClose}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200
-                         focus:outline-none focus:ring-2 focus:ring-blue-500
-                         ${
-                           isActive(link.path)
-                             ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                             : "bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800"
-                         }`}
+        <div className=" w-full flex flex-col items-center justify-center bg-white dark:bg-transparent">
+          {isAuthenticated ? (
+            <div className=" w-full flex flex-col items-center justify-around gap-10 h-9 bg-transparent dark:bg-transparent">
+              <NavLink
+                to={"/"}
+                className="w-3/4 h-9 flex items-center justify-center gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 py-2  dark:bg-[#3f3f3f] dark:hover:bg-[#262626]"
               >
-                <Icon size={20} />
-                <span className="font-medium">{link.label}</span>
-              </Link>
-            );
-          })}
+                <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                  Home
+                </p>
+                <House size={16} className="dark:text-[#FAFAFA]" />
+              </NavLink>
 
-          {/* Logout */}
-          <button
-            onClick={onLogout}
-            className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg 
-                     bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400
-                     hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-200
-                     focus:outline-none focus:ring-2 focus:ring-red-500 mt-4 border-t 
-                     border-gray-200 dark:border-gray-800 cursor-pointer"
-          >
-            <LogOut size={20} />
-            <span className="font-medium">Logout</span>
-          </button>
-        </nav>
+              <NavLink
+                to={"/notifications"}
+                className="w-3/4 h-9 flex items-center justify-center gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 py-2  dark:bg-[#3f3f3f] dark:hover:bg-[#262626]"
+              >
+                <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                  Notification
+                </p>
+                <Bell size={16} className="dark:text-[#FAFAFA]" />
+              </NavLink>
 
-        {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-800">
-          <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-            © 2026 Socially
-          </p>
+              <NavLink
+                to={"/profile/1"}
+                className="w-3/4 h-9 flex items-center justify-center gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 py-2 dark:bg-[#3f3f3f] dark:hover:bg-[#262626]"
+              >
+                <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                  Profile
+                </p>
+                <UsersRound
+                  size={16}
+                  strokeWidth={1.75}
+                  className="dark:text-[#FAFAFA]"
+                />
+              </NavLink>
+
+              <div
+                onClick={handleLogout}
+                className="w-full h-9 items-center justify-center gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md py-2  dark:hover:bg-[#262626] flex"
+              >
+                <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                  Logout
+                </p>
+                <LogOut size={16} className="dark:text-[#FAFAFA]" />
+              </div>
+            </div>
+          ) : (
+            <div className=" w-full flex flex-col items-center justify-around gap-5 pt-3 h-9 bg-transparent dark:bg-transparent">
+              <NavLink
+                to={"/"}
+                className="w-3/4 h-9 flex items-center justify-center gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 py-2  dark:bg-[#3f3f3f] dark:hover:bg-[#262626]"
+              >
+                <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                  Home
+                </p>
+                <House size={16} className="dark:text-[#FAFAFA]" />
+              </NavLink>
+
+              <NavLink
+                to={"/login"}
+                className="w-3/4 h-9 flex items-center justify-center gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 py-2  dark:bg-[#3f3f3f] dark:hover:bg-[#262626]"
+              >
+                <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                  Sign In
+                </p>
+                <LogIn size={16} className="dark:text-[#FAFAFA]" />
+              </NavLink>
+
+              <NavLink
+                to={"/register"}
+                className="w-3/4 h-9 flex items-center justify-center gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 py-2  dark:bg-[#3f3f3f] dark:hover:bg-[#262626]"
+              >
+                <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                  Sign Up
+                </p>
+                <BookPlus size={16} className="dark:text-[#FAFAFA]" />
+              </NavLink>
+
+
+
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </>
   );
-};
-
-export default MobileSidebar;
+}

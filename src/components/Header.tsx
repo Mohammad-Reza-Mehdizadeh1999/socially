@@ -1,192 +1,150 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
-import { Home, Bell, User, LogOut, Moon, Sun, Menu } from "lucide-react";
+import {Bell,House,LoaderCircle,LogOut,Menu,Moon,Sun,UsersRound} from "lucide-react";
+import { useState } from "react";
 import MobileSidebar from "./MobileSidebar";
-import { logoutRequest } from "../services/authService";
-import toast from "react-hot-toast";
+import { NavLink, useNavigate } from "react-router";
 import { useAuthStore } from "../store/authStore";
+import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
-import { splitUsername } from "../utiles/splitUsername";
+import { logoutRequest } from "../services/authServices";
+import { splitUsername } from "../utils/splitUsername";
+import { useTheme } from "../hooks/useTheme";
+import UserSearch from "./Ui/UserSearch";
 
-const Header: React.FC = () => {
+export default function Header() {
+  const { toggleTheme } = useTheme();
 
-  const [isDark, setIsDark] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme) {
-        return savedTheme === "dark";
-      }
-      return window.matchMedia("(prefers-color-scheme: dark)").matches;
-    }
-    return true;
-  });
+  const { logout: logoutStore, isAuthenticated, user } = useAuthStore();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const { clearAuth } = useAuthStore();
-
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [isDark]);
-
-  const toggleTheme = () => {
-    setIsDark((prev) => !prev);
+  const handleToggleSidebar = () => {
+    setIsOpen(!isOpen);
   };
 
   const handleLogout = async () => {
+    if (isLoggingOut) return;
+
     try {
+      setIsLoggingOut(true);
       await logoutRequest();
-      toast.success("Logout successfully");
-      clearAuth();
+      logoutStore();
       queryClient.removeQueries({ queryKey: ["session"] });
-      navigate("/login");
+      toast.success("Logout successfully");
+      navigate("login");
     } catch (err) {
-      toast.error("Logout failed");
-      console.error(err);
-    } finally {
-      setIsMobileMenuOpen(false);
+      toast.error("logout failed...");
+      console.log(err);
+      setIsLoggingOut(false);
     }
   };
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
-
-  const { user } = useAuthStore();
-
-  const navLinks = [
-    { path: "/", icon: Home, label: "Home" },
-    { path: "/notifications", icon: Bell, label: "Notifications" },
-    { path: `/profile/${splitUsername(user?.email)}`, icon: User, label: "Profile" },
-  ];
-
   return (
     <>
-      <header className="fixed top-0 z-40 w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black transition-colors duration-300">
-        <div className=" mx-auto px-4 sm:px-6 lg:px-16">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo - Center (Mobile & Desktop) */}
-            <div className="flex-1 md:flex-none ">
-              <Link
-                to="/"
-                className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight hover:opacity-80 transition-opacity"
-              >
-                Socially
-              </Link>
+      <MobileSidebar isOpen={isOpen} setIsOpen={setIsOpen}></MobileSidebar>
+
+      <div className="sticky top-0 z-50 w-full h-16 border-b border-[#E5E5E5]/60 bg-white/70 backdrop-blur-xl dark:border-[#262626]/60 dark:bg-black/60">
+        <div className="flex justify-between w-[80%] mx-auto items-center h-full">
+          <p className="text-[#171717] text-[20px] font-bold dark:text-[#FAFAFA] ">
+            Socially
+          </p>
+
+          {isAuthenticated && <UserSearch />}
+
+          <nav className="mib-w-150 flex items-center gap-2 md:gap-10">
+            <div
+              onClick={toggleTheme}
+              className="w-9 h-9 flex items-center justify-center cursor-pointer hover:bg-[#eeeeee] border border-[#E5E5E5] dark:border-[#262626] rounded-md shadow shadow-[#0000001A] dark:hover:bg-[#262626]"
+            >
+              <Sun size={20} className="dark:hidden" />
+              <Moon size={20} className="hidden dark:block dark:text-white" />
             </div>
 
-            {/* Desktop Navigation - Left Side */}
-            <nav className="hidden md:flex items-center justify-between space-x-2">
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 
-                         hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-200 
-                         focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label={
-                  isDark ? "Switch to light mode" : "Switch to dark mode"
-                }
-              >
-                {isDark ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-
-              {user &&
-                navLinks.map((link) => {
-                  const Icon = link.icon;
-                  return (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200
-                             focus:outline-none focus:ring-2 focus:ring-blue-500
-                             ${
-                               isActive(link.path)
-                                 ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                                 : "bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800"
-                             }`}
-                    >
-                      <Icon size={20} />
-                      <span className="font-medium">{link.label}</span>
-                    </Link>
-                  );
-                })}
-
-              {/* Logout */}
-              {user && (
-                <button
-                  onClick={handleLogout}
-                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300
-                         hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-200
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                  aria-label="Logout"
+            {isAuthenticated ? (
+              <div className=" items-center justify-around gap-10 h-9 hidden md:flex">
+                <NavLink
+                  to={"/"}
+                  className="h-9 flex items-center justify-between gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 dark:bg-[#0A0A0A] dark:hover:bg-[#262626]"
                 >
-                  <LogOut size={20} />
-                </button>
-              )}
+                  <House size={16} className="dark:text-[#FAFAFA]" />
+                  <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                    Home
+                  </p>
+                </NavLink>
 
-              {!user && (
-                <div className="flex items-center gap-1.5">
-                  <Link
-                    to={"/login"}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200
-                             focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 
-                         hover:bg-gray-200 dark:hover:bg-gray-800`}
-                  >
-                    <Home size={20} />
-                    <span className="font-medium">Login</span>
-                  </Link>
+                <NavLink
+                  to={"/notifications"}
+                  className=" h-9 flex items-center justify-between gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 dark:bg-[#0A0A0A] dark:hover:bg-[#262626]"
+                >
+                  <Bell size={16} className="dark:text-[#FAFAFA]" />
+                  <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                    Notification
+                  </p>
+                </NavLink>
 
-                  <Link
-                    to={"/register"}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200
-                             focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 
-                         hover:bg-gray-200 dark:hover:bg-gray-800`}
-                  >
-                    <Home size={20} />
-                    <span className="font-medium">Register</span>
-                  </Link>
+                <NavLink
+                  to={`/profile/${splitUsername(user?.email || "")}`}
+                  className="h-9 flex items-center justify-between gap-2 cursor-pointer hover:bg-[#eeeeee] rounded-md px-3 dark:bg-[#0A0A0A] dark:hover:bg-[#262626]"
+                >
+                  <UsersRound
+                    size={16}
+                    strokeWidth={1.75}
+                    className="dark:text-[#FAFAFA]"
+                  />
+                  <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                    Profile
+                  </p>
+                </NavLink>
+
+                <div
+                  onClick={handleLogout}
+                  className="w-9 h-9 items-center justify-center cursor-pointer hover:bg-[#eeeeee] rounded-md dark:hover:bg-[#262626] hidden md:flex"
+                >
+                  {isLoggingOut ? (
+                    <LoaderCircle
+                      size={16}
+                      className="animate-spin dark:text-[#FAFAFA]"
+                    />
+                  ) : (
+                    <LogOut size={16} className="dark:text-[#FAFAFA]" />
+                  )}
                 </div>
-              )}
-            </nav>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center justify-between gap-4">
+                <NavLink
+                  to={"/"}
+                  className=" h-9 flex items-center justify-between gap-2 cursor-pointer hover:bg-[#17171780] rounded-md px-3 dark:bg-[#0A0A0A] dark:hover:bg-[#262626]"
+                >
+                  <House size={16} className="dark:text-[#FAFAFA]" />
+                  <p className="text-[14px] text-[#171717] dark:text-[#FAFAFA]">
+                    Home
+                  </p>
+                </NavLink>
 
-            {/* Right Side - Desktop: Empty, Mobile: Menu Button */}
-            <div className="flex items-center md:hidden">
-              <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-900 
-                         text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800 
-                         transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label="Open menu"
-                aria-expanded={isMobileMenuOpen}
-              >
-                <Menu size={24} />
-              </button>
+                <NavLink
+                  to={"/login"}
+                  className="h-9 bg-[#0A0A0A] text-white flex items-center justify-between gap-2 cursor-pointer rounded-md px-6  hover:bg-[#17171780]"
+                >
+                  <p className="text-[14px] text-white dark:text-[#FAFAFA]">
+                    Sign In
+                  </p>
+                </NavLink>
+              </div>
+            )}
+
+            <div
+              onClick={handleToggleSidebar}
+              className="md:hidden w-9 h-9 flex items-center justify-center cursor-pointer hover:bg-[#eeeeee] border border-[#E5E5E5] dark:border-[#262626] rounded-md shadow shadow-[#0000001A] dark:hover:bg-[#262626] "
+            >
+              <Menu size={16} className="dark:text-[#FAFAFA]" />
             </div>
-          </div>
+          </nav>
         </div>
-      </header>
-
-      {/* Mobile Sidebar Component */}
-      <MobileSidebar
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-        isDark={isDark}
-        toggleTheme={toggleTheme}
-        onLogout={handleLogout}
-      />
+      </div>
     </>
   );
-};
-
-export default Header;
+}

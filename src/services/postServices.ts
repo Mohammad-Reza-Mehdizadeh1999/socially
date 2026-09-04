@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import api from "./axiosConfig";
 
-type createPostPayloadType = {
+export type createPostPayloadType = {
     content : string
+    image? : string
 }
 
-type createNewCommentForPostPayloadType = {
-    content : string
-}
 
 export const createNewPostRequest = async (payload : createPostPayloadType) => {
   const res = await api.post("/posts" , payload);  
@@ -19,31 +16,3 @@ export const getAllPostRequest = async () => {
   const res = await api.get("/posts");  
   return res.data;
 };
-
-export const likePostRequest = async (postId: string) => {
-  try {
-    const res = await api.patch(`/posts/${postId}`);
-    return res.data;
-  } catch (error: any) {
-    throw error.response?.data; 
-  }
-};
-
-export const deletePostRequest = async (postId: string) => {
-  try {
-    const res = await api.delete(`/posts/${postId}`);
-    return res.data;
-  } catch (error: any) {
-    throw error.response?.data; 
-  }
-};
-
-export const createNewCommentForPostRequest = async (postId: string , commentText : createNewCommentForPostPayloadType) => {
-  try {
-    const res = await api.post(`/posts/${postId}/comment`, commentText);
-    return res.data;
-  } catch (error: any) {
-    throw error.response?.data; 
-  }
-};
-

@@ -1,99 +1,120 @@
-
-export interface User {
-  id: string;
-  email: string;
-  image: string | null;
-  name: string;
+export type UserProfile = {
+  id?: string;
+  name?: string;
+  email?: string;
+  emailVerified?: boolean;
+  image?: string ;
+  bio?: string ;
+  location?: string ;
+  website?: string ;
+  createdAt?: string;
+  updatedAt?: string;
+  _count?: {
+    followers: number;
+    followings: number;
+    posts: number;
+  };
+  followers?: {
+    followerId: string;
+  }[];
 }
 
-export interface ProfileLike {
-  userId: string;
-}
-
-export interface ProfileComment {
-  id: string;
-  content: string;
-  createdAt: string;
-  author: User;
-}
-
-export interface ProfilePostCount {
-  likes: number;
-  comments: number;
-}
-
-
-export interface ProfilePostsType {
+export type Post = {
   id: string;
   authorId: string;
   content: string;
   createdAt: string;
   updatedAt: string;
-  author: User;
-  likes: ProfileLike[];
-  comments: ProfileComment[];
-  _count: ProfilePostCount;
-}
+  image ?: string
 
+  author: {
+    id: string;
+    email: string;
+    image: string | null;
+    name: string;
+  };
 
+  likes: {
+    userId: string;
+  }[];
 
-export type ProfileTab = 'posts' | 'likes';
+  comments: {
+    id: string;
+    content: string;
+    author: {
+      id: string;
+      email: string;
+      image: string | null;
+      name: string;
+    };
+    createdAt: string;
+  }[];
 
-export interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  emailVerified: boolean;
-  image: string | null;
-  bio: string | null;
-  location: string | null;
-  website: string | null;
-  createdAt: string;
-  updatedAt: string;
   _count: {
-    followers: number;
-    followings: number;
+    likes: number;
+    comments: number;
   };
 }
 
-export interface LikedPost {
-  id: string;        // like id
-  userId: string;    // the user who liked the post
+export type LikedPost = {
+  id: string;
+  userId: string;
   postId: string;
   createdAt: string;
-  post: ProfilePostsType;
+
+  post: {
+    id: string;
+    authorId: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+    image : string | null;
+
+    author: {
+      id: string;
+      email: string;
+      image: string | null;
+      name: string;
+    };
+
+    likes: {
+      userId: string;
+    }[];
+
+    comments: {
+      id: string;
+      content: string;
+      author: {
+        id: string;
+        email: string;
+        image: string | null;
+        name: string;
+      };
+      createdAt: string;
+    }[];
+
+    _count: {
+      likes: number;
+      comments: number;
+    };
+  };
 }
 
 
-export type EditProfileFormData = {
-  name: string;
-  bio: string;
-  location: string;
-  website: string;
-};
-
-
-export interface UserDataByUsername {
-  id: string;
+// following and followers 
+export interface FollowUser {
   name: string;
   email: string;
-  emailVerified: boolean;
+  id: string;
   image: string | null;
-  bio: string;
-  location: string;
-  website: string;
-  createdAt: string; 
-  updatedAt: string;
-  _count: UserCounts;
-  followers: Follower[];
 }
 
-export interface UserCounts {
-  followers: number;
-  followings: number;
-  posts: number;
+export interface FollowerType {
+  createdAt: string;
+  follower: FollowUser;
 }
 
-export interface Follower {
-  followerId: string;
+export interface FollowingType {
+  createdAt: string;
+  following: FollowUser;
 }

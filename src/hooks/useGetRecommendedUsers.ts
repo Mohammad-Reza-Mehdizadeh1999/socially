@@ -1,18 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRecommendedUsersRequest } from "../services/userService";
-import type { RecommendedUser } from "../types/RecommendedUser";
+import { getRecommendedUsers } from "../services/getRecommendedUsersServices";
 
 export const useGetRecommendedUsers = () => {
-  return useQuery<RecommendedUser[]>({
+
+  const query = useQuery({
     queryKey: ["recommendedUsers"],
-    queryFn: async () => {
-      const res = await getRecommendedUsersRequest();
-
-      if (!res.success) {
-        throw new Error("Failed to fetch profile");
-      }
-
-      return res.data;
-    },
+    queryFn: getRecommendedUsers,
+    retry: false,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
   });
+
+  return query;
 };

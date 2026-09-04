@@ -1,37 +1,20 @@
-// stores/authStore.ts
-import { create } from "zustand";
+import { create } from 'zustand';
+import type { User , Session } from '../types/SessionTypes';
 
 interface AuthState {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  user: any | null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  session: any | null;
+  user: User | null;
+  session: Session | null;
   isAuthenticated: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setAuth: (data: any) => void;
-  clearAuth: () => void;
+  setUser: (user: User) => void;
+  setSession: (session: Session) => void;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-
   user: null,
-
   session: null,
-
   isAuthenticated: false,
-
-  setAuth: (data) =>
-    set({
-      user: data.user,
-      session: data.session,
-      isAuthenticated: true,
-    }),
-
-  clearAuth: () =>
-    set({
-      user: null,
-      session: null,
-      isAuthenticated: false,
-    }),
-    
-}));
+  setUser: (user) => set({ user, isAuthenticated: !!user }),
+  setSession: (session) => set({ session }),
+  logout: () => set({ user: null, session: null, isAuthenticated: false }),
+})); 

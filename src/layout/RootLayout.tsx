@@ -1,45 +1,61 @@
-import { Outlet, useLocation } from "react-router";
-import SideProfile from "../components/SideProfile";
+import { Outlet, useLocation, Navigate } from "react-router";
 import Header from "../components/Header";
-import { useSessionQuery } from "../hooks/useSessionQuery";
-import { useAuthStore } from "../store/authStore";
-import SideSingIn from "../components/SideSingIn";
+import SideSignIn from "../components/SideSignIn";
+import SideRecommendedUsers from "../components/SideRecommendedUsers";
+import SideProfile from "../components/SideProfile";
+import { useSession } from "../hooks/UseSession";
 
-const RootLayout = () => {
-  
-  const { isLoading } = useSessionQuery();
-
-  const { isAuthenticated } = useAuthStore();
-
+export default function RootLayout() {
   const location = useLocation();
+  
+  const { data, isLoading } = useSession();
+  
+  const isAuthenticated = !!data?.data?.user;
 
-  if (isLoading) return <div>Loading...</div>;
+  const isHomePage = location.pathname === "/";
+  
+  const isProtectedRoute = location.pathname === "/notifications";
+
+  if (isProtectedRoute && isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-secondary-50 dark:bg-[#262626]">
+        <div className="text-center">
+          <div className="spinner border-t-4 border-blue-500 rounded-full w-10 h-10 animate-spin mx-auto mb-4"></div>
+          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
+            در حال بارگزاری...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isProtectedRoute && !isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
 
   return (
-    <div className="min-h-screen flex flex-col dark:bg-black bg-white text-black dark:text-white">
-      {/* Header */}
-      <Header />
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#0A0A0A]">
+      <header className="sticky top-0 z-10">
+        <Header />
+      </header>
+      
+      <div className="flex mx-auto w-[80%] md:w-[80%] mt-24 md:gap-5">
+        <aside className={`${!isAuthenticated ? "hidden md:block" : "hidden"} w-full max-w-90`}>
+          <SideSignIn />
+        </aside>
 
-      {/* Main Layout */}
-      <main className="flex flex-1 max-w-7xl mx-auto w-full gap-5 pt-25">
-        {/* Left Side */}
-        {!location.pathname.startsWith("/profile") && (
-          <aside className="w-1/3 mt-5">
-            { isAuthenticated ? <SideProfile /> : <SideSingIn />}
-          </aside>
-        )}
+        <aside className={`${isAuthenticated ? "hidden md:block" : "hidden"} w-full max-w-90`}>
+          <SideProfile />
+        </aside>
 
-        {/* Right Side (Pages) */}
-        <section
-          className={`${
-            location.pathname.startsWith("/profile") ? "w-full" : "w-2/3"
-          } dark:bg-black bg-white text-black dark:text-white`}
-        >
+        <main className={`mx-auto  ${isAuthenticated && isHomePage ? "md:w-[80%] w-full" : "md:w-3/5"}`}>
           <Outlet />
-        </section>
-      </main>
+        </main>
+
+        <aside className={`${isAuthenticated && isHomePage ? "hidden lg:block" : "hidden"} w-full max-w-84`}>
+          <SideRecommendedUsers />
+        </aside>
+      </div>
     </div>
   );
-};
-
-export default RootLayout;
+}
